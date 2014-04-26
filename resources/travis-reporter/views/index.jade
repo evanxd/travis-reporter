@@ -1,5 +1,138 @@
-extends layout
+doctype html
+html
+  head
+    meta(http-equiv="Content-Type", content="text/html; charset=big-5")
+    meta(name="Author", content="Tzu-chao, Wang")
+    meta(name="Generator", content="Sublime Text 2")
+    title Travis Reporter Prototype
+    link(rel="stylesheet", type="text/css", href="/stylesheets/index.css")
+    link(rel="stylesheet", type="text/css", href="/stylesheets/base.css")
+    script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
+    script(type="text/javascript", src="/javascripts/info_container.js")
+    script(type="text/javascript", src="/javascripts/index.js")
+    script(type="text/javascript", src="/javascripts/main.js")
 
-block content
-  h1= title
-  p Welcome to #{title}
+  body
+    div(id="container", class="container")
+      div(id="title", class="panel")
+        p Travis Reporter
+
+      div(id="function_bar", class="panel")
+        table
+          tr
+            td
+              button(id="bt_home", class="bt")
+                img(src="images/bt_home.png")
+            td
+              button(id="bt_help", class="bt")
+                img(src="images/bt_help.png")
+            td(class="tb_last")
+
+      div(id="search_bar", class="panel")
+        table
+          tr
+            td
+              img(id="img_magnifier", src="images/magnifier.png", alt="magnifier image")
+            td(id="td_search")
+               input(id="search", type="text", name="search" value="")
+            td
+              button(id="bt_search", class="bt") Search
+
+      div(id="search_tool_bar", class="panel")
+        table
+          tr
+            td
+              p Search tool
+            td
+              table
+                tr
+                  td
+                    p Component
+                    select(name="component")
+                      option(value="none") None
+                      option(value="bluetooth") Bluetooth
+                      option(value="browser") Browser
+                      option(value="calendar") Calendar
+                      option(value="camera") Camera
+                      option(value="clock") Clock
+                      option(value="communications") Communications
+                      option(value="costcontrol") Costcontrol
+                      option(value="email") Email
+                      option(value="fl") Fl
+                      option(value="fm") Fm
+                      option(value="gallery") Gallery
+                      option(value="homescreen") Homescreen
+                      option(value="keyboard") Keyboard
+                      option(value="music") Music
+                      option(value="pdfjs") Pdfjs
+                      option(value="ringtones") Ringtones
+                      option(value="search") Search
+                      option(value="setringtone") Setringtone
+                      option(value="settings") Settings
+                      option(value="sms") Sms
+                      option(value="system") System
+                      option(value="video") Video
+                      option(value="wallpaper") Wallpaper
+                      option(value="wappush") Wappush
+                      option(value="component_define") Self define...
+
+            td
+              table
+                tr
+                  td
+                    p Error count
+                    select(name="error_count")
+                      option(value="none") None
+                      option(value="100") &lt;= 100 times
+                      option(value="200") &lt;= 200 times
+                      option(value="500") &lt;= 500 times
+                      option(value="1000") &lt;= 1000 times
+                      option(value="error_define") Self define...
+
+            td
+              table
+                tr
+                  td
+                    p Date range
+                    select(name="date_range")
+                      option(value="none") None
+                      option(value="one_day") Today
+                      option(value="three_days") &lt;= 3 days
+                      option(value="one_week") &lt;= 1 week
+                      option(value="three_weeks") &lt;= 3 weeks
+                      option(value="one_month") &lt;= 1 month
+                      option(value="date_define") Self define...
+            
+            td
+              table
+                tr
+                  td
+                    p Display count
+                    select(name="display_count")
+                      option(value="none") None
+                      option(value="five") &lt;= 5
+                      option(value="ten") &lt;= 10
+                      option(value="twenty") &lt;= 20
+                      option(value="fifty") &lt;= 50
+                      option(value="display_define") Self define...
+
+            td(class="tb_last")
+
+      div(id="info_box", class="panel")
+        div(id="info_box_in", class="bg")
+          table(class="tb_header")
+            tr(class="tb_header")
+              th(axis="component", class="tb_header")
+                p Component
+                  img(src="images/arrow_down.png", alt="sort")
+              th(axis="name", class="tb_header")
+                p Name
+                  img(src="images/arrow_down.png", alt="sort")
+              th(axis="date_range", class="tb_header")
+                p Date
+                  img(src="images/arrow_down.png", alt="sort")
+              th(axis="error_count", class="tb_header")
+                p Error count
+                  img(src="images/arrow_down.png", alt="sort")
+              th(class="tb_header tb_last")
+            //Where result bar shows
