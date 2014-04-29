@@ -39,6 +39,19 @@ table, tr, td {
 	text-align: left;
 }
 
+button {
+    overflow: hidden;
+    border: solid;
+    border-radius: 0.4em;
+    border-width: 0.16em;
+    color: BLACK;
+    border-color: BLACK;
+    background-color: GRAY;
+    padding-top: 0.3em;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
 .container {
     position: absolute;
     left: 50%;
@@ -89,19 +102,6 @@ table, tr, td {
     padding-bottom: 0.3em;
     padding-left: 1%;
     padding-right: 1%;
-}
-
-.bt {
-    overflow: hidden;
-    border: solid;
-	border-radius: 0.4em;
-    border-width: 0.16em;
-    color: BLACK;
-    border-color: BLACK;
-    background-color: GRAY;
-	padding-top: 0.3em;
-	font-size: 1.5em;
-	font-weight: bold;
 }
 
 .bt_hover {
