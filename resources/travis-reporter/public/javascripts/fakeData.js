@@ -2,7 +2,7 @@
 define(function() {
 	return {
 		generateFakeTest: function(options) {
-			var count = 1;
+			var count = 10;
 			var result = new Array();
 			if(options['count'] != null && options['count'] != undefined) {
 				count = options['count'];
@@ -19,7 +19,7 @@ define(function() {
 
 				if(options != null && options != undefined) {
 					for(var key in options) {
-						if(bar[key] != null && bar[key] != undefined) {
+						if(key in bar && options[key] != null && options[key] != undefined) {
 							bar[key] = options[key];
 						}
 					}

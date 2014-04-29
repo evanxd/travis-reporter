@@ -26,53 +26,67 @@ define(function(require) {
 		 */
 		this.init = function() {
 			this.setRestriction('count', 10);
+			this.clear();
+			this.appendData(this.query());
 		}
 		
 		/**
-		 * Append a test bar to Travis-reporter.
+		 * Append data to Travis-reporter as a bar.
 		 *
-		 * @param {JSON} testBar The testBar to be appended to target DOM.
+		 * @param {JSON} data The data to be appended to target DOM.
 		 */
-		this.appendData = function(testBar) {
-			var bar = '<tr id="info_bar_no' + testBar['id'] + '" class="tb_info_bar">';
-			var btDetail = '<button id="bt_detail_no' + testBar['id'] + '" class="bt_detail">Detail</button>';
+		this.appendData = function(data) {
+			for(var i=0; i<data.length; i++) {
+				var bar = '<tr id="info_bar_no' + data[i]['id'] + '" class="tb_info_bar">';
+				var btDetail = '<button id="bt_detail_no' + data[i]['id'] + '" class="bt_detail">Detail</button>';
 
-			for(var key in testBar) {
-				if(key != 'id') {
-					bar = bar + '<td class="tb_info_bar_' + key + '">' + testBar[key] + '</td>';
+				for(var key in data[i]) {
+					if(key != 'id') {
+						bar = bar + '<td class="tb_info_bar_' + key + '">' + data[i][key] + '</td>';
+					}
 				}
+			
+				bar = bar + '<td class="tb_last">' + btDetail + '</td>';
+				bar = bar + '</tr>';
+			
+				$(this.target).append(bar);
 			}
-			
-			bar = bar + '<td class="tb_last">' + btDetail + '</td>';
-			bar = bar + '</tr>';
-			
-			$(this.target).append(bar);
 		}
 		
 		/**
-		 * Set the restriction of the data to be displayed, research the data
-		 * matche the restriction, and add it to target for display.
+		 * Set the restriction for data querying.
 		 *
 		 * @param {String} name The name (key) of the restriction to be set.
 		 * @param {String or Integer} value The content of certain restriction.
 		 */
 		this.setRestriction = function(name, value) {
-			this.restriction[name] = value;
-			var bars = this.search(this.restriction);
-			this.clear();
-			for(var i=0; i<bars.length; i++) {
-				this.appendData(bars[i]);
+			if(name != null) {
+				if(value != 'null') {
+					this.restriction[name] = value;
+				}
+				else {
+					this.restriction[name] = null;
+				}
+			}
+			else {
+				console.log('container.js function setRestriction() error.');
 			}
 		}
 
 		/**
-		 * Search data through restful API from back-end server with some options.
-		 * @param {JSON} options The searching options.
+		 * Reset the restriction for data querying.
+		 */
+		this.resetRestriction = function() {
+			this.restriction = [];
+		}
+
+		/**
+		 * Querying data through restful API from back-end server with some options.
 		 * @returns {JSON} A JSON contains the result from restful API.
 		 */
-		this.search = function(options) {
+		this.query = function() {
 			var result = new Array();
-			result = testGenerator.generateFakeTest(options);
+			result = testGenerator.generateFakeTest(this.restriction);
 			
 			return result;
 		}
