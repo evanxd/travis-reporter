@@ -49,10 +49,6 @@ define(function () {
 			}
 
 			$(target).removeClass();
-		},
-
-		buttonClicked: function(target) {
-			
 		}
 	};
 });

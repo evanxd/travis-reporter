@@ -4,7 +4,7 @@ html
     meta(http-equiv="Content-Type", content="text/html; charset=big-5")
     meta(name="Author", content="Tzu-chao, Wang")
     meta(name="Generator", content="Sublime Text 2")
-    title Travis Reporter Prototype
+    title= title
     link(rel="stylesheet", type="text/css", href="/stylesheets/index.css")
     link(rel="stylesheet", type="text/css", href="/stylesheets/base.css")
     script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
@@ -121,15 +121,15 @@ html
           table(class="tb_header")
             tr(class="tb_header")
               th(axis="component", class="tb_header")
-                p Component
-                  img(src="images/arrow_down.png", alt="sort")
+                span Component
+                img(class="img_sort", src="images/arrow_down.png", alt="sort")
               th(axis="name", class="tb_header")
-                p Name
-                  img(src="images/arrow_down.png", alt="sort")
+                span Name
+                img(class="img_sort", src="images/arrow_down.png", alt="sort")
               th(axis="date", class="tb_header")
-                p Date
-                  img(src="images/arrow_down.png", alt="sort")
+                span Date
+                img(class="img_sort", src="images/arrow_down.png", alt="sort")
               th(axis="error", class="tb_header")
-                p Error count
-                  img(src="images/arrow_down.png", alt="sort")
+                span Error count
+                img(class="img_sort", src="images/arrow_down.png", alt="sort")
               th(class="tb_header tb_last")

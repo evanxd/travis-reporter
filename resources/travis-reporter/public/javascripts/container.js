@@ -5,20 +5,39 @@
  * such as appending, detaching, and sorting test file bars on Travis-reporter.
  */
 define(function(require) {
-	var testGenerator = require('fakeData'); 
+	var testGenerator = require('fakeData');
+
+	/**
+	 * @private This is a private function.
+	 * Swap two DOM which are children of target DOM.
+	 * @param {DOM} element01 The first DOM to be swaped.
+	 * @param {DOM} element02 The second DOM to be swaped.
+	 */
+	function dataSwap(element01, element02) {
+		$(element02).after($(element01).detach());
+	}
+
+	/**
+	 * @private Private variables.
+	 */
+
+	const large_to_small = true;
+
+	var sortConfigure = {
+		"type": large_to_small,
+		"option": null
+	};
+
+	var target = null;
+
+	var restriction = new Array();
 
 	/**
 	 * @constructor
 	 * @param {DOM} target The target DOM which the test bar to be appended to.
 	 */
-	return function(target) {
-		this.target = target;
-		this.restriction = new Array();
-		this.sortingType = {
-			"big_to_small": true,
-			"small_to_big": false
-		};
-		this.sorting = this.sortingType.big_to_small;
+	return function(inputTarget) {
+		target = inputTarget;
 		
 		/**
 		 * This is an init function to give Travis-reporter an initial view
@@ -42,14 +61,14 @@ define(function(require) {
 
 				for(var key in data[i]) {
 					if(key != 'id') {
-						bar = bar + '<td class="tb_info_bar_' + key + '">' + data[i][key] + '</td>';
+						bar = bar + '<td class="' + key + '">' + data[i][key] + '</td>';
 					}
 				}
 			
 				bar = bar + '<td class="tb_last">' + btDetail + '</td>';
 				bar = bar + '</tr>';
 			
-				$(this.target).append(bar);
+				$(target).append(bar);
 			}
 		}
 		
@@ -62,10 +81,10 @@ define(function(require) {
 		this.setRestriction = function(name, value) {
 			if(name != null) {
 				if(value != 'null') {
-					this.restriction[name] = value;
+					restriction[name] = value;
 				}
 				else {
-					this.restriction[name] = null;
+					restriction[name] = null;
 				}
 			}
 			else {
@@ -77,7 +96,7 @@ define(function(require) {
 		 * Reset the restriction for data querying.
 		 */
 		this.resetRestriction = function() {
-			this.restriction = [];
+			restriction = [];
 		}
 
 		/**
@@ -86,7 +105,7 @@ define(function(require) {
 		 */
 		this.query = function() {
 			var result = new Array();
-			result = testGenerator.generateFakeTest(this.restriction);
+			result = testGenerator.generateFakeTest(restriction);
 			
 			return result;
 		}
@@ -100,45 +119,69 @@ define(function(require) {
 			this.dataCount = count;
 		}
 		
-		this.smallToLargeSorting = function(option) {
-			var hasChange = true;
-			while(hasChange) {
-				hasChange = false;
-				for(var i=0; i<this.data.length-1; i++) {
-					if(this.data[i][option] > this.data[i+1][option]) {
-						hasChange = true;
-						this.dataSwap(i);
+		/**
+		 * Sort data which are children of target DOM by specific option.
+		 * @param {String} option Data will sorted by this argument.
+		 */
+		this.sort = function(option) {
+			if(option == null && sortConfigure['option'] == null) {
+				console.log('container.js function sort() error.');
+			}
+			else {
+				//Configuring the sorting type and option.
+				if(sortConfigure['option'] == option) {
+					sortConfigure['type'] = !sortConfigure['type'];
+				}
+				else {
+					sortConfigure['option'] = option;
+					sortConfigure['type'] = large_to_small;
+				}
+
+				//Here starts the sorting.
+				var hasChange = true;
+				var data = $('.tb_info_bar');
+				var value01, value02;
+				var isDigit = $.isNumeric($('.tb_info_bar').children('.' + option).text());
+		
+				while(hasChange) {
+					hasChange = false;
+					for(var i=0; i<data.length-1; i++) {
+						value01 = $(data[i]).children('.' + option).text();
+						value02 = $(data[i+1]).children('.' + option).text();
+				
+						if(isDigit) {
+							value01 = parseInt(value01);
+							value02 = parseInt(value02);
+						}
+						
+						if(sortConfigure['type'] == large_to_small) {
+							if(value01 < value02) {
+								dataSwap(data[i], data[i+1]);
+								hasChange = true;
+							}
+						}
+						else {
+							if(value01 > value02) {
+								dataSwap(data[i], data[i+1]);
+								hasChange = true;
+							}
+						}
+
+						var temp = data[i];
+						data[i] = data[i+1];
+						data[i+1] = temp;
 					}
 				}
 			}
 		}
 		
-		this.largeToSmallSorting = function(option) {
-			var hasChange = true;
-			while(hasChange) {
-				hasChange = false;
-				for(var i=0; i<this.data.length-1; i++) {
-					if(this.data[i][option] < this.data[i+1][option]) {
-						hasChange = true;
-						this.dataSwap(i);
-					}
-				}
-			}
-		}
-		
-		this.dataSwap = function (index) {
-			var temp = this.data[index];
-			this.data[index] = this.data[index+1];
-			this.data[index+1] = temp;
-			
-			var nextIndex = index + 1;
-			var element01 = $('#info_bar_no' + index);
-			var element02 = $('#info_bar_no' + nextIndex);
-			
-			element01.attr('id', 'info_bar_no' + nextIndex);
-			element02.attr('id', 'info_bar_no' + index);
-			
-			element02.after(element01.detach());
+		/**
+		 * Swap two DOM which are children of target DOM.
+		 * @param {DOM} element01 The first DOM to be swaped.
+		 * @param {DOM} element02 The second DOM to be swaped.
+		 */
+		this.dataSwap = function (element01, element02) {
+			$(element02).after($(element01).detach());
 		}
 
 		/**

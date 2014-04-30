@@ -1,8 +1,9 @@
 'use strict';
 $(document).ready(require(['button', 'container'], function(button, Container) {
-    var test_container = new Container($("table.tb_header"), 100);
+    var test_container = new Container($("table.tb_header"));
     
 	test_container.init();
+	test_container.sort('error');
 	button.init();
 
 	$('select').change(function() {
@@ -12,8 +13,10 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 		button.addButtonAction($("button.bt_detail"));
 	});
 	
-	$('th.tb_header').mousedown(function() {
-		test_container.largeToSmallSorting($(this).attr('axis'));
+	$('th.tb_header').click(function() {
+		test_container.sort($(this).attr('axis'));
+		$('.img_sort').hide();
+		$(this).children('.img_sort').slideToggle('fast');
 	});
 
 	$('button#bt_home').click(function() {
