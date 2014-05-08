@@ -10,5 +10,4 @@ module.exports = {
        	var result =spiltStr.match(patt);
         return result;
 	}
-
 }
