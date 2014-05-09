@@ -112,16 +112,6 @@ button {
 	background-color: rgba(0, 0, 0, 0.3);	
 }
 
-.tb_header {
-	border: solid;
-	border-width: 0.2em;
-	border-color: BLACK;
-	margin: 0em;
-	padding: 0em;
-	vertical-align: middle;
-	text-align: left;
-}
-
 table.tb_header {
 	border: none;
 	position: relative;
@@ -131,15 +121,24 @@ table.tb_header {
 	border-collapse: separate;
 }
 
-tr.tb_header {
-	background-color: GRAY;
-}
-
 th.tb_header, td.tb_header{
+    margin: 0em;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
     padding-top: 0.2em;
-	margin: 0em;
+    vertical-align: middle;
+    text-align: left;
+}
+
+tr.tb_header {
+    background-color: GRAY;
+}
+
+th.tb_header, th.tb_last {
+    border: solid;
+    border-width: 0.2em;
+    border-color: BLACK;
+    
 }
 
 th.tb_header img {
