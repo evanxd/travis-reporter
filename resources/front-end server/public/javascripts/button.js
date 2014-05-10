@@ -1,9 +1,6 @@
 'use strict';
 
 define(function () {
-	var defaultTarget = 'button, th.tb_header';
-	var defaultToggleTarget = ".tab";
-
 	/**
 	 * Add actions to target button when the mouse roll in, roll out from it.
 	 * Roll in action: Highlight the target button.
@@ -99,10 +96,6 @@ define(function () {
 		 * @param {DOM} target The target DOM object to be bound to these feedback actions.
 		 */
 		addButtonFeedbackAction: function(target) {
-			if(target == null) {
-				target = defaultTarget;
-			}
-
 			hoverFeedback(target);
 			pressFeedback(target);
 			releaseFeedback(target);
@@ -116,10 +109,6 @@ define(function () {
 		 * @param {DOM} target The target DOM object to be bound to these feedback actions.
 		 */
 		addToggleFeedbackAction: function(target) {
-			if(target == null) {
-				target = defaultToggleTarget;
-			}
-			
 			toggleHoverFeedback(target);
 			togglePressedFeedback(target);
 		},
@@ -130,10 +119,6 @@ define(function () {
 		 * @param {DOM} target The target DOM object to remove the feedback actions.
 		 */
 		removeButtonFeedbackAction: function(target) {
-			if(target == null) {
-				target = defaultTarget;
-			}
-
 			$(target).removeClass();
 		},
 
