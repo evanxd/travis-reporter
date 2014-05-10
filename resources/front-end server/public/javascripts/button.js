@@ -1,6 +1,9 @@
 'use strict';
 
 define(function () {
+	var defaultTarget = 'button, th.tb_header';
+	var defaultToggleTarget = ".tab";
+
 	/**
 	 * Add actions to target button when the mouse roll in, roll out from it.
 	 * Roll in action: Highlight the target button.
@@ -8,7 +11,7 @@ define(function () {
 	 * 
 	 * @param {DOM} target The target DOM object to be bound to this feedback action.
 	 */
-	function hoverFeedbackAction(target) {
+	function hoverFeedback(target) {
 		$(target).hover(
 			function() {
 				$(this).addClass('bt_hover');
@@ -26,7 +29,7 @@ define(function () {
 	 * 
 	 * @param {DOM} target The target DOM object to be bound to this feedback action.
 	 */
-	function pressFeedbackAction(target) {
+	function pressFeedback(target) {
 		$(target).mousedown(function() {
 			$(this).removeClass('bt_hover');
 			$(this).addClass('bt_pressed');
@@ -34,15 +37,56 @@ define(function () {
 	}
 
 	/**
-	 * Add actions to target button when the mouse pressed, then releases on it.
+	 * Add actions to target button when the mouse pressed, and then releases on it.
 	 * Action: Highlight the target button.
 	 * 
 	 * @param {DOM} target The target DOM object to be bound to this feedback action.
 	 */
-	function releaseFeedbackAction(target) {
+	function releaseFeedback(target) {
 		$(target).mouseup(function() {
 			$(this).removeClass('bt_pressed');
 			$(this).addClass('bt_hover');
+		});
+	}
+
+	/**
+	 * Add actions to target button when the mouse presses between it.
+	 * Action: Highlight the target button if it is not on pressed status
+	 * currently, and set the other buttons in the same group back to
+	 * default status.
+	 * 
+	 * @param {DOM} target The target DOM object to be bound to this feedback action.
+	 */
+	function toggleHoverFeedback(target) {
+		$(target).hover(
+			function() {
+				var classAttr = $(this).attr('class');
+				if(classAttr.indexOf('.bt_pressed') == -1) {
+					$(this).addClass('bt_hover');
+				}
+			},
+			function() {
+				var classAttr = $(this).attr('class');
+				if(classAttr.indexOf('.bt_pressed') == -1) {
+					$(this).removeClass('bt_hover');
+				}
+			}
+		);
+	}
+
+	/**
+	 * Add actions to target button when the mouse pressed on the target.
+	 * Action: Make the pressed button darker and set the other pressed
+	 * button in the same group back to default status
+	 *
+	 * @param {DOM} target The target DOM object to be bound to this feedback action.
+	 */
+	function togglePressedFeedback(target) {
+		$(target).mousedown(function() {
+			if($(this).attr('class') != '.bt_pressed') {
+				$(this.tagName.toLowerCase() + '.bt_pressed').removeClass('bt_pressed');
+				$(this).addClass('bt_pressed');
+			}
 		});
 	}
 
@@ -56,12 +100,28 @@ define(function () {
 		 */
 		addButtonFeedbackAction: function(target) {
 			if(target == null) {
-				target = $('button, th.tb_header');
+				target = defaultTarget;
+			}
+
+			hoverFeedback(target);
+			pressFeedback(target);
+			releaseFeedback(target);
+		},
+
+		/**
+		 * Add actions to target button when user performs mouse actions on it.
+		 * The actions added to button is to give user an appropriate feedback when mouse
+		 * rolls in, rolls out, presses, and releases on the target button in the same group.
+		 * 
+		 * @param {DOM} target The target DOM object to be bound to these feedback actions.
+		 */
+		addToggleFeedbackAction: function(target) {
+			if(target == null) {
+				target = defaultToggleTarget;
 			}
 			
-			hoverFeedbackAction(target);
-			pressFeedbackAction(target);
-			releaseFeedbackAction(target);
+			toggleHoverFeedback(target);
+			togglePressedFeedback(target);
 		},
 
 		/**
@@ -71,7 +131,7 @@ define(function () {
 		 */
 		removeButtonFeedbackAction: function(target) {
 			if(target == null) {
-				target = $('button, th.tb_header');
+				target = defaultTarget;
 			}
 
 			$(target).removeClass();

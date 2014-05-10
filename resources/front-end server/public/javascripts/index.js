@@ -9,6 +9,7 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 	// Button action binding.
 	// Binding feedback actions.
 	button.addButtonFeedbackAction('button, th.tb_header');
+	button.addToggleFeedbackAction('.tab');
 
 	// Binding searching action to search tools (pull-down menus).
 	$('select').change(function() {
