@@ -4,8 +4,13 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
     
 	test_container.init();
 	test_container.sort('error');
-	button.init();
 
+	// Button action binding.
+	// Binding feedback actions.
+	button.addButtonFeedbackAction('button, th.tb_header');
+	button.addToggleFeedbackAction('.tab');
+
+	// Binding searching action to search tools (pull-down menus).
 	$('select').change(function() {
 		test_container.setRestriction($(this).attr('name'), $(this).val());
 		test_container.clear();

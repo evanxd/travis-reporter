@@ -162,3 +162,19 @@ th.tb_header img {
 	width: 100%;
 	text-align: right;
 }
+
+div#info_box_tab {
+    margin-bottom: -0.2em;
+}
+
+div#info_box_tab span p {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    padding-top: 0.5em;
+    cursor: pointer;
+    border: solid;
+    border-radius: 0.5em;
+    border-bottom-left-radius: 0em;
+    border-bottom-right-radius: 0em;
+    border-color: #282828;
+}
