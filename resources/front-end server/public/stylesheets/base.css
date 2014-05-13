@@ -72,7 +72,7 @@ button {
 }
 
 .panel {
-    width: 100%;
+    
     border: solid;
     border-color: #282828;
     background-color: GRAY;
@@ -81,6 +81,7 @@ button {
     padding-bottom: 0.3em;
     padding-left: 0.5%;
     padding-right: 0.5%;
+    position: relative;
 }
 
 .sorting_header {
@@ -110,6 +111,10 @@ button {
 
 .bt_pressed {
 	background-color: rgba(0, 0, 0, 0.3);	
+}
+
+.display {
+    position: relative;
 }
 
 table.tb_header {
