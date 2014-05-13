@@ -126,25 +126,24 @@ define(function () {
 		 * The corresponding function of home page button: Lead user back to default
 		 * view of data.
 		 * 
-		 * @param {Object} targetContainer The object handling the data to be shown.
+		 * @param {Object} targetController The object handling the data to be shown.
 		 */
-		homePageButtonAction: function(targetContainer) {
-			targetContainer.resetRestriction();
-			targetContainer.clear();
-			targetContainer.appendData(targetContainer.query());
-			this.addButtonFeedbackAction($("button.bt_detail"));
+		homePageButtonAction: function(targetController) {
+			targetController.resetRestriction();
+			targetController.clear();
+			targetController.appendData(targetController.query());
 			$('.img_sort').hide();
 		},
 
 		/**
-		 * The corresponding function of the clicked header buttons: Ask targetContainer
+		 * The corresponding function of the clicked header buttons: Ask targetController
 		 * to sort data by the property of clicked header.
 		 *
 		 * @param {DOM} clickedDOM The clicked header element.
-		 * @param {Object} targetContainer The object handling the data to be shown.
+		 * @param {Object} targetController The object handling the data to be shown.
 		 */
-		headerButtonAction: function(clickedDOM, targetContainer) {
-			targetContainer.sort($(clickedDOM).attr('axis'));
+		headerButtonAction: function(clickedDOM, targetController) {
+			targetController.sort($(clickedDOM).attr('axis'));
 			$('.img_sort').hide();
 			$(clickedDOM).children('.img_sort').slideToggle('fast');
 		},
@@ -154,13 +153,60 @@ define(function () {
 		 * to sort data by the property of the changed pull-down menu.
 		 *
 		 * @param {DOM} clickedDOM The clicked pull-down menu element.
-		 * @param {Object} targetContainer The object handling the data to be shown.
+		 * @param {Object} targetController The object handling the data to be shown.
 		 */
-		searchToolButtonAction: function(clickedDOM, targetContainer) {
-			targetContainer.setRestriction($(clickedDOM).attr('name'), $(clickedDOM).val());
-			targetContainer.clear();
-			targetContainer.appendData(targetContainer.query());
+		searchToolButtonAction: function(clickedDOM, targetController) {
+			targetController.setRestriction($(clickedDOM).attr('name'), $(clickedDOM).val());
+			targetController.clear();
+			targetController.appendData(targetController.query());
 			this.addButtonFeedbackAction($("button.bt_detail"));
+		},
+
+		detailButtonAction: function(clickedDOM, targetTabContainer, targetContainer, targetController, data) {
+			var $tab = $('<span>');
+			var $content = $('<p>');
+
+			var count = $(targetTabContainer).children().last().children().attr('id');
+			count = parseInt(count.substr(count.length - 1)) + 1;
+
+			$content.attr('id', 'tab' + count);
+			$content.attr('class', 'tab');
+			$content.append('Tab ' + count);
+
+			$tab.append($content);
+			this.addToggleFeedbackAction($content);
+			
+			var callbackFunc = this.tabButtonAction;
+			$content.click(function() {
+				callbackFunc(this, targetController);
+			});
+			
+			$(targetTabContainer).append($tab);
+			
+			$.ajax({
+				url: '/detail',
+				type: 'get'
+			}).done(function(data) {
+				var $detail = $('<div>');
+				
+				alert(count);
+
+				$detail.attr('id', 'display' + count);
+				$detail.attr('class', 'display');
+
+				$detail.append(data);
+				$(targetContainer).children('div.display').hide();
+				$(targetContainer).append($detail);
+			});
+		},
+
+		tabButtonAction: function(thisDOM, targetController) {
+			$('div.display').hide();
+
+			var count = $(thisDOM).attr('id');
+			count = count.substr(count.length - 1);
+
+			$('div#display' + count).show();
 		}
 	};
 });

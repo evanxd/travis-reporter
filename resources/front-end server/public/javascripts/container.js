@@ -111,6 +111,21 @@ define(function (require) {
 			}
 		},
 
+		getData: function(name, value) {
+			var data = $('tr.tb_info_bar td.' + name + ':contains("' + value + '")').parent();
+			var columns = null;
+			var result = new Array();
+
+			for(var i=0; i<data.length; i++) {
+				columns = $(data[i]).children();
+				for(var j=0; j<columns.length; j++) {
+					result[i][$(columns[j]).attr('class')] = $(columns[j]).text();
+				}
+			}
+
+			return result;
+		},
+
 		/**
 		 * Reset the restriction for data querying.
 		 */
