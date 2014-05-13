@@ -14,6 +14,9 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 	// Binding searching action to search tools (pull-down menus).
 	$('select').change(function() {
 		button.searchToolButtonAction($(this), test_container);
+		$('button.bt_detail').click(function() {
+			button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+		});
 	});
 	
 	// Binding sorting action to the headers of data bars.
@@ -24,5 +27,24 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 	// Binding home page action to home page button.
 	$('button#bt_home').click(function() {
 		button.homePageButtonAction(test_container);
+		button.addButtonFeedbackAction($("button.bt_detail"));
+		$('button.bt_detail').click(function() {
+			button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+		});
+	});
+
+	$('p.tab').click(function() {
+		button.tabButtonAction($(this), test_container);
+		if($(this).attr('id') == 'display0') {
+			button.homePageButtonAction(test_container);
+			button.addButtonFeedbackAction($("button.bt_detail"));
+			$('button.bt_detail').click(function() {
+				button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+			});
+		}
+	});
+
+	$('button.bt_detail').click(function() {
+		button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
 	});
 }));
