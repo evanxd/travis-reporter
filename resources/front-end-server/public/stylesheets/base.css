@@ -1,0 +1,164 @@
+html {
+    font-family: "Arial Black", Gadget, sans-serif;
+    font-size: 1em;
+    background-color: BLACK;
+}
+
+p {
+	padding: 0em;
+	margin: 0em;	
+}
+
+span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+input {
+    position: relative;
+    width: 100%;
+	font-size: 2em;
+    box-sizing: border-box;
+}
+
+table {
+	position: relative;
+	width: 100%;
+	overflow: scroll;
+	word-break: break-all;
+	white-space: nowrap;
+}
+
+table, tr, td {
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+	padding-top: 0em;
+	padding-bottom: 0em;
+	margin: 0em;
+	vertical-align: middle;
+	text-align: left;
+}
+
+button {
+    overflow: hidden;
+    border: solid;
+    border-radius: 0.4em;
+    border-width: 0.16em;
+    color: BLACK;
+    border-color: BLACK;
+    background-color: GRAY;
+    padding-top: 0.3em;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.container {
+    position: absolute;
+    left: 50%;
+    margin-left: -48%;
+    width: 96%;
+    background-color: GRAY;
+}
+
+.element {
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.bg {
+    border: solid;
+    border-color: #282828;
+    background-color: #505050;
+}
+
+.panel {
+    width: 100%;
+    border: solid;
+    border-color: #282828;
+    background-color: GRAY;
+    margin: -0.1em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+}
+
+.sorting_header {
+    position: relative;
+    border: solid;
+    border-color: #282828;
+    background-color: GRAY;
+}
+
+.label {
+    border: solid;
+    border-color: #282828;
+    background-color: GRAY;
+    margin-top: -3px;
+    margin-bottom: -3px;
+    margin-right: -0.3em;
+    margin-left: -3px;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.bt_hover {
+	background-color: rgba(255, 255, 255, 0.5);	
+}
+
+.bt_pressed {
+	background-color: rgba(0, 0, 0, 0.3);	
+}
+
+.tb_header {
+	border: solid;
+	border-width: 0.2em;
+	border-color: BLACK;
+	margin: 0em;
+	padding: 0em;
+	vertical-align: middle;
+	text-align: left;
+}
+
+table.tb_header {
+	border: none;
+	position: relative;
+	width: 100%;
+	padding: 0em;
+	margin: 0em;
+	border-collapse: separate;
+}
+
+tr.tb_header {
+	background-color: GRAY;
+}
+
+th.tb_header, td.tb_header{
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+    padding-top: 0.2em;
+	margin: 0em;
+}
+
+th.tb_header img {
+    display: none;
+}
+
+#title {
+    color: WHITE;
+    font-weight: bold;
+    background-color: #303030;
+}
+
+.tb_last {
+	position: relative;
+	width: 100%;
+	text-align: right;
+}
+
+#td_last {
+	width: 100%;
+	text-align: right;
+}
