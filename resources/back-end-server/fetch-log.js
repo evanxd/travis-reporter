@@ -30,7 +30,7 @@ module.exports ={
                       travis.logs({
                           id: LOG_ID
                     }, function(err, res){
-                      console.log("job id: "+JOB_ID+" ; log id: "+LOG_ID + " ; Start at :"+JOB_TIME);
+                       console.log("job id: "+JOB_ID+" ; log id: "+LOG_ID + " ; Start at :"+JOB_TIME);
                                logbody = res.log.body;
                                var errfilename = parser.findErrFile(res.log.body);
                               if(errfilename==null){
@@ -41,7 +41,7 @@ module.exports ={
                                   "Date" : JOB_TIME,
                                   "errFile" : errfilename
                                 }
-                                // console.log(result);
+                                 console.log(result);
                               }
                         });
                     });

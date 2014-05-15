@@ -1,3 +1,0 @@
-mongodb:
-	console.log('10');
-	mongod --dbpath=~/database
