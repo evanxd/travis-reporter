@@ -10,8 +10,8 @@ portal:package
 package:
 	npm install travis-ci
 	npm install mongoose
-db.show:
-	mongo database 
+showdb:
+	cd $(BACKDIR) && node updateBase.js
 $(DBDIR):
 	sudo apt-get update \
 	sudo apt-get install mongodb

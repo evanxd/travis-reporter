@@ -9,7 +9,7 @@ var dataSchema = mongoose.Schema({
 var data = mongoose.model('datas',dataSchema);
 db.on('error',console.error.bind(console,'connection error:'));
 db.once('open',function callback(){
-	console.log('db link and insert fake data done');
+	console.log('db link and update fake data done');
 	updateData('2013/12/11','errr.js',5);
 });
 function updateData(date,name,count){
@@ -20,7 +20,7 @@ function updateData(date,name,count){
 			ob.errCount+=count;
 			data.remove({errName:ob.errName})
 			.exec(insertData(ob.errDate,ob.errName,ob.errCount));
-
+			console.log(ob);
 		}
 	});
 }
