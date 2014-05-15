@@ -41,7 +41,7 @@ module.exports ={
                                   "Date" : JOB_TIME,
                                   "errFile" : errfilename
                                 }
-                                console.log(result);
+                                // console.log(result);
                               }
                         });
                     });
