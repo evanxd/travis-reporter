@@ -72,7 +72,7 @@ button {
 }
 
 .panel {
-    width: 100%;
+    
     border: solid;
     border-color: #282828;
     background-color: GRAY;
@@ -81,6 +81,7 @@ button {
     padding-bottom: 0.3em;
     padding-left: 0.5%;
     padding-right: 0.5%;
+    position: relative;
 }
 
 .sorting_header {
@@ -112,14 +113,8 @@ button {
 	background-color: rgba(0, 0, 0, 0.3);	
 }
 
-.tb_header {
-	border: solid;
-	border-width: 0.2em;
-	border-color: BLACK;
-	margin: 0em;
-	padding: 0em;
-	vertical-align: middle;
-	text-align: left;
+.display {
+    position: relative;
 }
 
 table.tb_header {
@@ -131,15 +126,24 @@ table.tb_header {
 	border-collapse: separate;
 }
 
-tr.tb_header {
-	background-color: GRAY;
-}
-
 th.tb_header, td.tb_header{
+    margin: 0em;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
     padding-top: 0.2em;
-	margin: 0em;
+    vertical-align: middle;
+    text-align: left;
+}
+
+tr.tb_header {
+    background-color: GRAY;
+}
+
+th.tb_header, th.tb_last {
+    border: solid;
+    border-width: 0.2em;
+    border-color: BLACK;
+    
 }
 
 th.tb_header img {
@@ -161,4 +165,20 @@ th.tb_header img {
 #td_last {
 	width: 100%;
 	text-align: right;
+}
+
+div#info_box_tab {
+    margin-bottom: -0.2em;
+}
+
+div#info_box_tab span p {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    padding-top: 0.5em;
+    cursor: pointer;
+    border: solid;
+    border-radius: 0.5em;
+    border-bottom-left-radius: 0em;
+    border-bottom-right-radius: 0em;
+    border-color: #282828;
 }

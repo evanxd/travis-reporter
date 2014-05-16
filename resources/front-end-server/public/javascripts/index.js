@@ -1,28 +1,50 @@
 'use strict';
+
 $(document).ready(require(['button', 'container'], function(button, Container) {
+    // Variable initialization.
     var test_container = new Container($("table.tb_header"));
-    
 	test_container.init();
 	test_container.sort('error');
-	button.init();
 
+	// Button action binding.
+	// Binding feedback actions.
+	button.addButtonFeedbackAction('button, th.tb_header');
+	button.addToggleFeedbackAction('.tab');
+
+	// Binding searching action to search tools (pull-down menus).
 	$('select').change(function() {
-		test_container.setRestriction($(this).attr('name'), $(this).val());
-		test_container.clear();
-		test_container.appendData(test_container.query());
-		button.addButtonAction($("button.bt_detail"));
+		button.searchToolButtonAction($(this), test_container);
+		$('button.bt_detail').click(function() {
+			button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+		});
 	});
 	
+	// Binding sorting action to the headers of data bars.
 	$('th.tb_header').click(function() {
-		test_container.sort($(this).attr('axis'));
-		$('.img_sort').hide();
-		$(this).children('.img_sort').slideToggle('fast');
+		button.headerButtonAction($(this), test_container);
 	});
 
+	// Binding home page action to home page button.
 	$('button#bt_home').click(function() {
-		test_container.resetRestriction();
-		test_container.clear();
-		test_container.appendData(test_container.query());
-		button.addButtonAction($("button.bt_detail"));
+		button.homePageButtonAction(test_container);
+		button.addButtonFeedbackAction($("button.bt_detail"));
+		$('button.bt_detail').click(function() {
+			button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+		});
+	});
+
+	$('p.tab').click(function() {
+		button.tabButtonAction($(this), test_container);
+		if($(this).attr('id') == 'display0') {
+			button.homePageButtonAction(test_container);
+			button.addButtonFeedbackAction($("button.bt_detail"));
+			$('button.bt_detail').click(function() {
+				button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+			});
+		}
+	});
+
+	$('button.bt_detail').click(function() {
+		button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
 	});
 }));

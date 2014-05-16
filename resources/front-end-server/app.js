@@ -1,3 +1,4 @@
+var db = require('./model/db');
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
@@ -5,9 +6,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
+var searchs = require('./routes/search');
 var app = express();
 
 // view engine setup
@@ -22,8 +24,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/detail', routes);
 app.use('/users', users);
-
+//get data route
+app.use('/data',searchs);
+//
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -52,7 +57,9 @@ app.use(function(err, req, res, next) {
     res.render('error', {
         message: err.message,
         error: {}
+
     });
+    console.log(err.message);
 });
 
 

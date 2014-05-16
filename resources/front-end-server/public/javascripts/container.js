@@ -4,7 +4,7 @@
  * This class provides API to perform manipulation of test file bars
  * such as appending, detaching, and sorting test file bars on Travis-reporter.
  */
-define(function(require) {
+define(function (require) {
 	var testGenerator = require('fakeData');
 
 	/**
@@ -23,38 +23,57 @@ define(function(require) {
 
 	const large_to_small = true;
 
+	/**
+	 * Deciding:
+	 * type: current data sorting type.
+	 * option: what option data will sort by.
+	 */
 	var sortConfigure = {
 		"type": large_to_small,
 		"option": null
 	};
 
+	/**
+	 * The target DOM object to be manipulated, the contains of manipulations
+	 * including such as appending and showing data, sorting data, and removing
+	 * data from it.
+	 */
 	var target = null;
 
+	/**
+	 * Warning: this variable may be moved to another Javascript file in the future.
+	 * The querying options.
+	 */
 	var restriction = new Array();
 
 	/**
 	 * @constructor
 	 * @param {DOM} target The target DOM which the test bar to be appended to.
 	 */
-	return function(inputTarget) {
+	function Container (inputTarget) {
 		target = inputTarget;
-		
+	}
+
+	/**
+	 * @public The following functions and variables are public.
+	 */
+	Container.prototype = {
 		/**
 		 * This is an init function to give Travis-reporter an initial view
 		 * of test files.
 		 */
-		this.init = function() {
+		init: function() {
 			this.setRestriction('count', 10);
 			this.clear();
 			this.appendData(this.query());
-		}
+		},
 		
 		/**
 		 * Append data to Travis-reporter as a bar.
 		 *
 		 * @param {JSON} data The data to be appended to target DOM.
 		 */
-		this.appendData = function(data) {
+		appendData: function(data) {
 			for(var i=0; i<data.length; i++) {
 				var bar = '<tr id="info_bar_no' + data[i]['id'] + '" class="tb_info_bar">';
 				var btDetail = '<button id="bt_detail_no' + data[i]['id'] + '" class="bt_detail">Detail</button>';
@@ -70,7 +89,7 @@ define(function(require) {
 			
 				$(target).append(bar);
 			}
-		}
+		},
 		
 		/**
 		 * Set the restriction for data querying.
@@ -78,7 +97,7 @@ define(function(require) {
 		 * @param {String} name The name (key) of the restriction to be set.
 		 * @param {String or Integer} value The content of certain restriction.
 		 */
-		this.setRestriction = function(name, value) {
+		setRestriction: function(name, value) {
 			if(name != null) {
 				if(value != 'null') {
 					restriction[name] = value;
@@ -90,40 +109,58 @@ define(function(require) {
 			else {
 				console.log('container.js function setRestriction() error.');
 			}
-		}
+		},
+
+		getData: function(name, value) {
+			var data = $('tr.tb_info_bar td.' + name + ':contains("' + value + '")').parent();
+			var columns = null;
+			var result = new Array();
+
+			for(var i=0; i<data.length; i++) {
+				columns = $(data[i]).children();
+				for(var j=0; j<columns.length; j++) {
+					result[i][$(columns[j]).attr('class')] = $(columns[j]).text();
+				}
+			}
+
+			return result;
+		},
 
 		/**
 		 * Reset the restriction for data querying.
 		 */
-		this.resetRestriction = function() {
+		resetRestriction: function() {
 			restriction = [];
-		}
+		},
 
 		/**
+		 * Warning: This function may be moved to another Javascript file in the future.
 		 * Querying data through restful API from back-end server with some options.
+		 *
 		 * @returns {JSON} A JSON contains the result from restful API.
 		 */
-		this.query = function() {
+		query: function() {
 			var result = new Array();
 			result = testGenerator.generateFakeTest(restriction);
 			
 			return result;
-		}
+		},
 
 		/**
 		 * Set total count to be shown to the user.
 		 * 
 		 * @param {Integer} count The count to be set.
 		 */
-		this.setCount = function(count) {
+		setCount: function(count) {
 			this.dataCount = count;
-		}
+		},
 		
 		/**
 		 * Sort data which are children of target DOM by specific option.
+		 *
 		 * @param {String} option Data will sorted by this argument.
 		 */
-		this.sort = function(option) {
+		sort: function(option) {
 			if(option == null && sortConfigure['option'] == null) {
 				console.log('container.js function sort() error.');
 			}
@@ -173,22 +210,24 @@ define(function(require) {
 					}
 				}
 			}
-		}
+		},
 		
 		/**
 		 * Swap two DOM which are children of target DOM.
 		 * @param {DOM} element01 The first DOM to be swaped.
 		 * @param {DOM} element02 The second DOM to be swaped.
 		 */
-		this.dataSwap = function (element01, element02) {
+		dataSwap: function (element01, element02) {
 			$(element02).after($(element01).detach());
-		}
+		},
 
 		/**
 		 * Clear all data appended to target.
 		 */
-		this.clear = function() {
+		clear: function() {
 			$('.tb_info_bar').detach();
 		}
 	};
+
+	return Container;
 });

@@ -108,19 +108,23 @@ html
                       option(value="display_define") Self define...
             td(class="tb_last")
       div(id="info_box", class="panel")
+        div(id="info_box_tab")
+          span
+            p(id="tab0" class="tab") Home page
         div(id="info_box_in", class="bg")
-          table(class="tb_header")
-            tr(class="tb_header")
-              th(axis="component", class="tb_header")
-                span Component
-                img(class="img_sort", src="images/arrow_down.png", alt="sort")
-              th(axis="name", class="tb_header")
-                span Name
-                img(class="img_sort", src="images/arrow_down.png", alt="sort")
-              th(axis="date", class="tb_header")
-                span Date
-                img(class="img_sort", src="images/arrow_down.png", alt="sort")
-              th(axis="error", class="tb_header")
-                span Error count
-                img(class="img_sort", src="images/arrow_down.png", alt="sort")
-              th(class="tb_header tb_last")
+          div(id="display0" class="display")
+            table(class="tb_header")
+              tr(class="tb_header")
+                th(axis="component", class="tb_header")
+                  span Component
+                  img(class="img_sort", src="images/arrow_down.png", alt="sort")
+                th(axis="name", class="tb_header")
+                  span Name
+                  img(class="img_sort", src="images/arrow_down.png", alt="sort")
+                th(axis="date", class="tb_header")
+                  span Date
+                  img(class="img_sort", src="images/arrow_down.png", alt="sort")
+                th(axis="error", class="tb_header")
+                  span Error count
+                  img(class="img_sort", src="images/arrow_down.png", alt="sort")
+                th(class="tb_last")
