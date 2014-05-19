@@ -21,15 +21,13 @@ function doRepo(time,callback){
   owner_name: owner,
   name: reponame
   }, function (err, res) {
-    console.log(owner+"/"+reponame);
     var BUILD_IDS = res.builds;
     for(i in BUILD_IDS){
       var finishTime = BUILD_IDS[i].finished_at;
-      if(finishTime >= time){
+      if(finishTime > time || (time==null&&finishTime!=null)){
         if(finishTime>timeTemp){
           timeTemp = finishTime;
         }
-        console.log(BUILD_IDS[i].id+"  "+BUILD_IDS[i].finished_at);
         doBuild(BUILD_IDS[i].id);
       }
     }
@@ -41,12 +39,10 @@ function doBuild(BUILD_ID){
   travis.builds({
     id: BUILD_ID
   }, function(err, res){
-    var allerror;
-    console.log("build id: "+res.build.id);
-    console.log("build time: "+res.build.finished_at);
     for(var i in res.build.job_ids){
       var JOB_ID = res.build.job_ids[i];
-      var errorname = doJob(JOB_ID,res.build.finished_at);
+      var time = res.build.finished_at.slice(0,10);
+      var errorname = doJob(JOB_ID,time);
     }
   });
 }
@@ -56,7 +52,7 @@ function doJob(JOB_ID,time){
     id: JOB_ID
   }, function(err, res){
     var LOG_ID = res.job.log_id;
-    var errfile = doLog(LOG_ID,time);
+    doLog(LOG_ID,time);
   });
 }
 
@@ -66,15 +62,30 @@ function doLog(LOG_ID,time){
   }, function(err,res){
     var result = parser.findErrFile(res.log.body);
     if(result!=null){
-      doJson(result,time);
+      doJson(result.sort(),time);
     }
   });
 }
 
 function doJson(errfile,time){
-  var result = {
-    "Date" : time.split("T",1),
-   "errFile" : errfile
+  var error=errfile[0],counts=0;
+  var length=errfile.length;
+  for(i=0;i<=length;i++){
+    if(error!=errfile[i]){
+      var result = {
+        "errDate" : time, 
+        "errName" : error, 
+        "errCount" : counts
+      }
+      outJson(result);
+      error=errfile[i];
+      counts=1;
+    }
+    else{
+      counts++;
+    }
   }
+}
+function outJson(result){
   console.log(result);
 }
