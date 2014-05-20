@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 
 module.exports = {
 	findErrFile : function(data,callback){
