@@ -10,7 +10,7 @@ var data = mongoose.model('datas',dataSchema);
 db.on('error',console.error.bind(console,'connection error:'));
 db.once('open',function callback(){
 	console.log('db link and update fake data done');
-	updateData('2013/12/11','errr.js',5);
+	updateData('2013-12-11','find.js',5);
 });
 function updateData(date,name,count){
 	data.findOne({errName:name}).exec(function(err,ob){
@@ -19,13 +19,14 @@ function updateData(date,name,count){
 		else{
 			ob.errCount+=count;
 			data.remove({errName:ob.errName})
-			.exec(insertData(ob.errDate,ob.errName,ob.errCount));
+			.exec(insertData(ob));
 			console.log(ob);
 		}
 	});
 }
-function insertData(date,name,count){
-	var test = new data({errDate:date,
-	errName:name,errCount:count});
+function insertData(json){
+
+	var test = new data({errDate:json.errDate,
+	errName:json.errName,errCount:json.errCount});
 	test.save();
 }
