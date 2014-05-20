@@ -5,7 +5,6 @@ exports.inter = setInterval(function(){
 	fetch.doThing(buildTime,setTime);
 },10000);
 function setTime(time){
-	console.log(time);
 	buildTime=time;
 }
 
