@@ -25,7 +25,7 @@ function doRepo(time,callback){
     for(i in BUILD_IDS){
       var finishTime = BUILD_IDS[i].finished_at;
       if(finishTime > time || (time==null&&finishTime!=null)){
-        if(finishTime>timeTemp){
+        if(finishTime>timeTemp||timeTemp==null){
           timeTemp = finishTime;
         }
         doBuild(BUILD_IDS[i].id);
