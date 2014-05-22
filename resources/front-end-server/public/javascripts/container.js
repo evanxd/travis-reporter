@@ -103,7 +103,7 @@ define(function (require) {
 					restriction[name] = value;
 				}
 				else {
-					restriction[name] = null;
+					delete restriction[name];
 				}
 			}
 			else {
@@ -140,9 +140,36 @@ define(function (require) {
 		 * @returns {JSON} A JSON contains the result from restful API.
 		 */
 		query: function() {
-			var result = new Array();
-			result = testGenerator.generateFakeTest(restriction);
-			
+			var result = [],
+				option;
+
+			if(restriction.length != 0) {
+				option = restriction;
+			}
+			else {
+				option = '';
+			}
+
+			$.ajax({
+				url: "/data",
+				type: "GET",
+				data: option,
+				async: false,
+				success: function (data) {
+					var length = data.length,
+						i = 0;
+
+					for (i = 0; i < length; i++) {
+						result[i] = new Array();
+						result[i]["id"] = data[i]["_id"];
+						result[i]["component"] = "Test";
+						result[i]["name"] = data[i]["fileName"];
+						result[i]["error"] = data[i]["errorCount"];
+						result[i]["date"] = data[i]["date"];
+					}
+				}
+			});
+
 			return result;
 		},
 
