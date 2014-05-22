@@ -1,4 +1,4 @@
-// var db = require('./model/db');
+var db = require('./model/db');
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-// var searchs = require('./routes/search');
+var searchs = require('./routes/search');
 var app = express();
 
 // view engine setup
@@ -27,7 +27,7 @@ app.use('/', routes);
 app.use('/detail', routes);
 app.use('/users', users);
 //get data route
-// app.use('/data',searchs);
+app.use('/data',searchs);
 //
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
