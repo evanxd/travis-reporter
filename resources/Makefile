@@ -1,8 +1,9 @@
 FRONTDIR=./front-end-server
 BACKDIR=./back-end-server
+DATADIR=./database
 DBDIR=/usr/bin/mongod
-run:front-end portal showdb
-db:$(DBDIR)
+run: db portal front-end
+db:$(DBDIR) lock
 	mongod --dbpath=database &
 front-end:
 	cd $(FRONTDIR) && npm install && npm start &
@@ -11,8 +12,8 @@ portal:package
 package:
 	npm install travis-ci
 	npm install mongoose
-showdb:db
-	cd $(BACKDIR) && node updateBase.js
+lock:
+	cd $(DATADIR) && rm mongod.lock
 $(DBDIR):
 	sudo apt-get update \
 	sudo apt-get install mongodb
