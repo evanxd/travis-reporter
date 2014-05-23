@@ -1,20 +1,14 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/database');
 var db = mongoose.connection;
-var dataSchema = mongoose.Schema({
-	errDate:String,
-	errName:String,
-	errCount:Number
-},{versionKey:false})
-var data = mongoose.model('datas',dataSchema);
+var data = mongoose.model('data');
 db.on('error',console.error.bind(console,'connection error:'));
 db.once('open',function callback(){
 	console.log('db link and update fake data done');
-	var json={"errDate":"2013/12/11","errName":"as.js","errCount":5};
+	var json={"date":"2013/12/11","fileName":"as.js","errCount":5};
 	update(json);
 });
 function update(json){
-	data.findOne({errName:json.errName}).exec(function(err,ob){
+	data.findOne({fileName:json.fileName}).exec(function(err,ob){
 		if(err){
 			console.error(err);
 			insertData(json);
@@ -22,9 +16,9 @@ function update(json){
 		else{
 			if(ob!=null){
 			ob.errCount+=json.errCount;
-			data.remove({errName:ob.errName})
+			data.remove({fileName:ob.fileName})
 			.exec(insertData(ob));
-				}
+			}
 			else
 				insertData(json);
 			console.log(ob);
@@ -32,7 +26,7 @@ function update(json){
 		});
 	}
 function insertData(json){
-	var test = new data({errDate:json.errDate,
-	errName:json.errName,errCount:json.errCount});
+	var test = new data({date:json.date,
+	fileName:json.fileName,errCount:json.errCount});
 	test.save();
-	}
+}
