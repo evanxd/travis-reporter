@@ -1,5 +1,6 @@
 var parser = require('./parser.js');
 var Travis = require('travis-ci');
+var update = require('./updateBase.js');
 var travis = new Travis({
   version: '2.0.0'
 });
@@ -73,8 +74,8 @@ function doJson(errfile,time){
   for(i=0;i<=length;i++){
     if(error!=errfile[i]){
       var result = {
-        "errDate" : time, 
-        "errName" : error, 
+        "date" : time, 
+        "fileName" : error, 
         "errCount" : counts
       }
       outJson(result);
@@ -87,5 +88,5 @@ function doJson(errfile,time){
   }
 }
 function outJson(result){
-  console.log(result);
+  update.update(result);
 }
