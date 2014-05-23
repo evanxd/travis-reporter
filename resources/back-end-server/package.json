@@ -1,0 +1,12 @@
+{
+  "name": "Travis-reporter_Back-end",
+  "version" : "0.0.1",
+  "scripts": {
+    "start": "node runServer.js"
+  },
+  "dependencies": {
+    "express": "~4.0.0",
+    "travis-ci":"*",
+    "mongoose":"*"
+  }
+}
