@@ -1,7 +1,6 @@
 var fetch=require('./fetch');
-var buildTime;
+var buildTime="2014-05-26T17:24:50Z";
 exports.inter = setInterval(function(){
-	console.log('it is timer run with ten second');
 	fetch.doThing(buildTime,setTime);
 },10000);
 function setTime(time){
