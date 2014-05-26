@@ -119,9 +119,9 @@ define(function (require) {
 		},
 
 		getData: function(name, value) {
-			var data = $('tr.tb_info_bar td.' + name + ':contains("' + value + '")').parent();
+			var data = $('tr.tb_info_bar').children('td.' + name).find(':contains("' + value + '")');
 			var columns = null;
-			var result = new Array();
+			var result = [];
 
 			for(var i=0; i<data.length; i++) {
 				columns = $(data[i]).children();
