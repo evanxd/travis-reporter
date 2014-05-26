@@ -6,8 +6,8 @@ run: clean db server
 db: $(DBDIR)
 	mongod --dbpath=database &
 
-server:
-	cd $(ROOTDIR) && sudo npm install && npm start &
+serverice:
+	cd $(ROOTDIR) && npm install && npm start &
 
 $(DBDIR):
 	sudo apt-get update \
