@@ -189,8 +189,6 @@ define(function () {
 			}).done(function(data) {
 				var $detail = $('<div>');
 				
-				alert(count);
-
 				$detail.attr('id', 'display' + count);
 				$detail.attr('class', 'display');
 
