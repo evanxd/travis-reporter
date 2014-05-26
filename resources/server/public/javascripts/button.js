@@ -143,12 +143,18 @@ define(function () {
 		 * @param {Object} targetController The object handling the data to be shown.
 		 */
 		headerButtonAction: function(clickedDOM, targetController) {
-			var arrows = $(clickedDOM).find(":hidden"),
-				arrowToBeShown = null;
+			var sortingType = targetController.sort($(clickedDOM).attr("axis")),
+				arrowToShown = null;
+			
+			if(sortingType == true) { // Large to small.
+				arrowToShown = $(clickedDOM).children(".down");
+			}
+			else {
+				arrowToShown = $(clickedDOM).children(".up");
+			}
 
-			targetController.sort($(clickedDOM).attr('axis'));
-			$('.img_sort').hide();
-			$(arrows[0]).slideToggle('fast');
+			$(".img_sort").hide();
+			$(arrowToShown).slideToggle("fast");
 		},
 
 		/**
