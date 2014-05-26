@@ -8,16 +8,6 @@ define(function (require) {
 	var testGenerator = require('fakeData');
 
 	/**
-	 * @private This is a private function.
-	 * Swap two DOM which are children of target DOM.
-	 * @param {DOM} element01 The first DOM to be swaped.
-	 * @param {DOM} element02 The second DOM to be swaped.
-	 */
-	function dataSwap(element01, element02) {
-		$(element02).after($(element01).detach());
-	}
-
-	/**
 	 * @private Private variables.
 	 */
 
@@ -33,6 +23,13 @@ define(function (require) {
 		"option": null
 	};
 
+	var options = {
+		"id": "_id",
+		"name": "fileName",
+		"date": "date",
+		"error": "errCount"
+	};
+
 	/**
 	 * The target DOM object to be manipulated, the contains of manipulations
 	 * including such as appending and showing data, sorting data, and removing
@@ -45,6 +42,16 @@ define(function (require) {
 	 * The querying options.
 	 */
 	var restriction = new Array();
+
+	/**
+	 * @private This is a private function.
+	 * Swap two DOM which are children of target DOM.
+	 * @param {DOM} element01 The first DOM to be swaped.
+	 * @param {DOM} element02 The second DOM to be swaped.
+	 */
+	function dataSwap(element01, element02) {
+		$(element02).after($(element01).detach());
+	}
 
 	/**
 	 * @constructor
@@ -161,11 +168,10 @@ define(function (require) {
 
 					for (i = 0; i < length; i++) {
 						result[i] = new Array();
-						result[i]["id"] = data[i]["_id"];
-						result[i]["component"] = "Test";
-						result[i]["name"] = data[i]["fileName"];
-						result[i]["error"] = data[i]["errorCount"];
-						result[i]["date"] = data[i]["date"];
+						result[i]["id"] = data[i][options["id"]];
+						result[i]["name"] = data[i][options["name"]];
+						result[i]["date"] = data[i][options["date"]];
+						result[i]["error"] = data[i][options["error"]];
 					}
 				}
 			});
@@ -186,8 +192,16 @@ define(function (require) {
 		 * Sort data which are children of target DOM by specific option.
 		 *
 		 * @param {String} option Data will sorted by this argument.
+		 * @return {Boolean} True for sorting data from large to small, false otherwise.
 		 */
 		sort: function(option) {
+			//Here starts the sorting.
+			var hasChange = true,
+				data = $('.tb_info_bar'),
+				value01,
+				value02,
+				isDigit = $.isNumeric($('.tb_info_bar').children('.' + option).text());
+
 			if(option == null && sortConfigure['option'] == null) {
 				console.log('container.js function sort() error.');
 			}
@@ -200,12 +214,6 @@ define(function (require) {
 					sortConfigure['option'] = option;
 					sortConfigure['type'] = large_to_small;
 				}
-
-				//Here starts the sorting.
-				var hasChange = true;
-				var data = $('.tb_info_bar');
-				var value01, value02;
-				var isDigit = $.isNumeric($('.tb_info_bar').children('.' + option).text());
 		
 				while(hasChange) {
 					hasChange = false;
@@ -237,6 +245,8 @@ define(function (require) {
 					}
 				}
 			}
+
+			return sortConfigure['type'];
 		},
 		
 		/**
