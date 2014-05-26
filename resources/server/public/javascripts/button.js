@@ -143,9 +143,12 @@ define(function () {
 		 * @param {Object} targetController The object handling the data to be shown.
 		 */
 		headerButtonAction: function(clickedDOM, targetController) {
+			var arrows = $(clickedDOM).find(":hidden"),
+				arrowToBeShown = null;
+
 			targetController.sort($(clickedDOM).attr('axis'));
 			$('.img_sort').hide();
-			$(clickedDOM).children('.img_sort').slideToggle('fast');
+			$(arrows[0]).slideToggle('fast');
 		},
 
 		/**

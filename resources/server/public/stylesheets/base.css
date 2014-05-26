@@ -117,6 +117,10 @@ button {
     position: relative;
 }
 
+.img_sort {
+    display: none;
+}
+
 table.tb_header {
 	border: none;
 	position: relative;
