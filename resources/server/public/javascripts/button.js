@@ -171,7 +171,7 @@ define(function () {
 			this.addButtonFeedbackAction($("button.bt_detail"));
 		},
 
-		detailButtonAction: function(clickedDOM, targetTabContainer, targetContainer, targetController, data) {
+		detailButtonAction: function(fileName, targetTabContainer, targetContainer, targetController) {
 			var $tab = $('<span>');
 			var $content = $('<p>');
 
@@ -180,7 +180,7 @@ define(function () {
 
 			$content.attr('id', 'tab' + count);
 			$content.attr('class', 'tab');
-			$content.append('Tab ' + count);
+			$content.append(fileName);
 
 			$tab.append($content);
 			this.addToggleFeedbackAction($content);
