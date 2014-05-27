@@ -1,48 +1,45 @@
-'use strict';
-
 /**
  * This class provides API to perform manipulation of test file bars
  * such as appending, detaching, and sorting test file bars on Travis-reporter.
  */
-define(function (require) {
-	var testGenerator = require('fakeData');
-
+define(function () {
+	'use strict';
 	/**
 	 * @private Private variables.
 	 */
 
-	const large_to_small = true;
+	var large_to_small = true,
 
 	/**
 	 * Deciding:
 	 * type: current data sorting type.
 	 * option: what option data will sort by.
 	 */
-	var sortConfigure = {
-		"type": large_to_small,
-		"option": null
-	};
+		sortConfigure = {
+			"type": large_to_small,
+			"option": null
+		},
 
-	var optionRegExp = {
-		"id": "_id",
-		"name": "fileName",
-		"date": "date",
-		"error": "errCount",
-		"count": "displayCount"
-	};
+		optionRegExp = {
+			"id": "_id",
+			"name": "fileName",
+			"date": "date",
+			"error": "errCount",
+			"count": "count"
+		},
 
 	/**
 	 * The target DOM object to be manipulated, the contains of manipulations
 	 * including such as appending and showing data, sorting data, and removing
 	 * data from it.
 	 */
-	var target = null;
+		target = null,
 
 	/**
 	 * Warning: this variable may be moved to another Javascript file in the future.
 	 * The querying options.
 	 */
-	var options = {};
+		options = {};
 
 	/**
 	 * @private This is a private function.
@@ -52,6 +49,70 @@ define(function (require) {
 	 */
 	function dataSwap(element01, element02) {
 		$(element02).after($(element01).detach());
+	}
+
+	function sortingL2S (data, option) {
+		var hasChange = true,
+			value01,
+			value02,
+			isDigit = $.isNumeric($(data).children('.' + option).text()),
+			i = 0,
+			max = data.length-1,
+			temp = null;
+
+		while (hasChange) {
+			hasChange = false;
+			for (i = 0; i < max; i += 1) {
+				value01 = $(data[i]).children('.' + option).text().toLowerCase();
+				value02 = $(data[i+1]).children('.' + option).text().toLowerCase();
+
+				if (isDigit) {
+					value01 = Number(value01);
+					value02 = Number(value02);
+				}
+				
+				if(value01 < value02) {
+					dataSwap(data[i], data[i+1]);
+					hasChange = true;
+				}
+
+				temp = data[i];
+				data[i] = data[i+1];
+				data[i+1] = temp;
+			}
+		}
+	}
+
+	function sortingS2L (data, option) {
+		var hasChange = true,
+			value01,
+			value02,
+			isDigit = $.isNumeric($(data).children('.' + option).text()),
+			i = 0,
+			max = data.length-1,
+			temp = null;
+
+		while (hasChange) {
+			hasChange = false;
+			for (i = 0; i < max; i += 1) {
+				value01 = $(data[i]).children('.' + option).text().toLowerCase();
+				value02 = $(data[i+1]).children('.' + option).text().toLowerCase();
+
+				if (isDigit) {
+					value01 = Number(value01);
+					value02 = Number(value02);
+				}
+				
+				if(value01 > value02) {
+					dataSwap(data[i], data[i+1]);
+					hasChange = true;
+				}
+
+				temp = data[i];
+				data[i] = data[i+1];
+				data[i+1] = temp;
+			}
+		}
 	}
 
 	/**
@@ -82,12 +143,18 @@ define(function (require) {
 		 * @param {JSON} data The data to be appended to target DOM.
 		 */
 		appendData: function(data) {
-			for(var i=0; i<data.length; i++) {
-				var bar = '<tr id="info_bar_no' + data[i]['id'] + '" class="tb_info_bar">';
-				var btDetail = '<button id="bt_detail_no' + data[i]['id'] + '" class="bt_detail">Detail</button>';
+			var i,
+				max = data.length,
+				bar = null,
+				btDetail = null,
+				key = null;
 
-				for(var key in data[i]) {
-					if(key != 'id') {
+			for(i = 0; i < max; i += 1) {
+				bar = '<tr id="info_bar_no' + data[i].id + '" class="tb_info_bar">';
+				btDetail = '<button id="bt_detail_no' + data[i].id + '" class="bt_detail">Detail</button>';
+
+				for(key in data[i]) {
+					if(key !== 'id') {
 						bar = bar + '<td class="' + key + '">' + data[i][key] + '</td>';
 					}
 				}
@@ -106,8 +173,8 @@ define(function (require) {
 		 * @param {String or Integer} value The content of certain restriction.
 		 */
 		setOptions: function(name, value) {
-			if(name != null) {
-				if(value != "null") {
+			if(name !== undefined) {
+				if(value !== "null") {
 					options[optionRegExp[name]] = value;
 				}
 				else {
@@ -120,13 +187,17 @@ define(function (require) {
 		},
 
 		getData: function(name, value) {
-			var data = $('tr.tb_info_bar').children('td.' + name).find(':contains("' + value + '")');
-			var columns = null;
-			var result = [];
+			var data = $('tr.tb_info_bar').children('td.' + name).find(':contains("' + value + '")'),
+				columns = null,
+				result = [],
+				i, j,
+				max = data.length,
+				max2 = null;
 
-			for(var i=0; i<data.length; i++) {
+			for(i = 0; i < max; i += 1) {
 				columns = $(data[i]).children();
-				for(var j=0; j<columns.length; j++) {
+				max2 = columns.length;
+				for(j = 0; j < max2; j += 1) {
 					result[i][$(columns[j]).attr('class')] = $(columns[j]).text();
 				}
 			}
@@ -138,7 +209,7 @@ define(function (require) {
 		 * Reset the options for data querying.
 		 */
 		resetOptions: function() {
-			$.each(options, function (index, value) {
+			$.each(options, function (index) {
 				delete options[index];
 			});
 		},
@@ -153,7 +224,7 @@ define(function (require) {
 			var result = [],
 				option;
 
-			if(options.length != 0) {
+			if(options.length !== 0) {
 				option = options;
 			}
 			else {
@@ -169,26 +240,17 @@ define(function (require) {
 					var length = data.length,
 						i = 0;
 
-					for (i = 0; i < length; i++) {
-						result[i] = new Array();
-						result[i]["id"] = data[i][optionRegExp["id"]];
-						result[i]["name"] = data[i][optionRegExp["name"]];
-						result[i]["date"] = data[i][optionRegExp["date"]];
-						result[i]["error"] = data[i][optionRegExp["error"]];
+					for (i = 0; i < length; i += 1) {
+						result[i] = [];
+						result[i].id = data[i][optionRegExp.id];
+						result[i].name = data[i][optionRegExp.name];
+						result[i].date = data[i][optionRegExp.date];
+						result[i].error = data[i][optionRegExp.error];
 					}
 				}
 			});
 
 			return result;
-		},
-
-		/**
-		 * Set total count to be shown to the user.
-		 * 
-		 * @param {Integer} count The count to be set.
-		 */
-		setCount: function(count) {
-			this.dataCount = count;
 		},
 		
 		/**
@@ -198,58 +260,28 @@ define(function (require) {
 		 * @return {Boolean} True for sorting data from large to small, false otherwise.
 		 */
 		sort: function(option) {
-			//Here starts the sorting.
-			var hasChange = true,
-				data = $('.tb_info_bar'),
-				value01,
-				value02,
-				isDigit = $.isNumeric($('.tb_info_bar').children('.' + option).text());
-
-			if(option == null && sortConfigure['option'] == null) {
+			if (option === undefined && sortConfigure.option === undefined) {
 				console.log('container.js function sort() error.');
 			}
 			else {
 				//Configuring the sorting type and option.
-				if(sortConfigure['option'] == option) {
-					sortConfigure['type'] = !sortConfigure['type'];
+				if (sortConfigure.option === option) {
+					sortConfigure.type = !sortConfigure.type;
 				}
 				else {
-					sortConfigure['option'] = option;
-					sortConfigure['type'] = large_to_small;
+					sortConfigure.option = option;
+					sortConfigure.type = large_to_small;
 				}
 		
-				while(hasChange) {
-					hasChange = false;
-					for(var i=0; i<data.length-1; i++) {
-						value01 = $(data[i]).children('.' + option).text();
-						value02 = $(data[i+1]).children('.' + option).text();
-				
-						if(isDigit) {
-							value01 = parseInt(value01);
-							value02 = parseInt(value02);
-						}
-						
-						if(sortConfigure['type'] == large_to_small) {
-							if(value01 < value02) {
-								dataSwap(data[i], data[i+1]);
-								hasChange = true;
-							}
-						}
-						else {
-							if(value01 > value02) {
-								dataSwap(data[i], data[i+1]);
-								hasChange = true;
-							}
-						}
-
-						var temp = data[i];
-						data[i] = data[i+1];
-						data[i+1] = temp;
-					}
+				if (sortConfigure.type === large_to_small) {
+					sortingL2S($('.tb_info_bar'), option);
+				}
+				else {
+					sortingS2L($('.tb_info_bar'), option);
 				}
 			}
 
-			return sortConfigure['type'];
+			return sortConfigure.type;
 		},
 		
 		/**
