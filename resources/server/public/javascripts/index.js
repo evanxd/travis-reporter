@@ -1,9 +1,9 @@
-'use strict';
-
 $(document).ready(require(['button', 'container'], function(button, Container) {
-    // Variable initialization.
-    var test_container = new Container($("table.tb_header"));
-	test_container.init();
+	'use strict';
+
+	// Variable initialization.
+	var test_container = new Container($("table.tb_header"));
+	button.homePageButtonAction(test_container);
 	test_container.sort('error');
 
 	// Button action binding.
@@ -35,7 +35,7 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 
 	$('p.tab').click(function() {
 		button.tabButtonAction($(this), test_container);
-		if($(this).attr('id') == 'display0') {
+		if($(this).attr('id') === 'display0') {
 			button.homePageButtonAction(test_container);
 			button.addButtonFeedbackAction($("button.bt_detail"));
 			$('button.bt_detail').click(function() {
