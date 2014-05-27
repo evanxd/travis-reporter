@@ -1,12 +1,12 @@
 ROOTDIR=./server
 DATADIR=./database
 DBDIR=/usr/bin/mongod
-run: clean db server
+run: clean db service
 
 db: $(DBDIR)
 	mongod --dbpath=database &
 
-serverice:
+service:
 	cd $(ROOTDIR) && npm install && npm start &
 
 $(DBDIR):
