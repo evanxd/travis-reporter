@@ -129,7 +129,7 @@ define(function () {
 		 * @param {Object} targetController The object handling the data to be shown.
 		 */
 		homePageButtonAction: function(targetController) {
-			targetController.resetRestriction();
+			targetController.resetOptions();
 			targetController.clear();
 			targetController.appendData(targetController.query());
 			$('.img_sort').hide();
@@ -165,7 +165,7 @@ define(function () {
 		 * @param {Object} targetController The object handling the data to be shown.
 		 */
 		searchToolButtonAction: function(clickedDOM, targetController) {
-			targetController.setRestriction($(clickedDOM).attr('name'), $(clickedDOM).val());
+			targetController.setOptions($(clickedDOM).attr('name'), $(clickedDOM).val());
 			targetController.clear();
 			targetController.appendData(targetController.query());
 			this.addButtonFeedbackAction($("button.bt_detail"));
