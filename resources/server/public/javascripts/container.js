@@ -23,11 +23,12 @@ define(function (require) {
 		"option": null
 	};
 
-	var options = {
+	var optionRegExp = {
 		"id": "_id",
 		"name": "fileName",
 		"date": "date",
-		"error": "errCount"
+		"error": "errCount",
+		"count": "displayCount"
 	};
 
 	/**
@@ -41,7 +42,7 @@ define(function (require) {
 	 * Warning: this variable may be moved to another Javascript file in the future.
 	 * The querying options.
 	 */
-	var restriction = new Array();
+	var options = {};
 
 	/**
 	 * @private This is a private function.
@@ -70,7 +71,7 @@ define(function (require) {
 		 * of test files.
 		 */
 		init: function() {
-			this.setRestriction('count', 10);
+			this.setOptions('count', 10);
 			this.clear();
 			this.appendData(this.query());
 		},
@@ -99,18 +100,18 @@ define(function (require) {
 		},
 		
 		/**
-		 * Set the restriction for data querying.
+		 * Set the options for data querying.
 		 *
 		 * @param {String} name The name (key) of the restriction to be set.
 		 * @param {String or Integer} value The content of certain restriction.
 		 */
-		setRestriction: function(name, value) {
+		setOptions: function(name, value) {
 			if(name != null) {
-				if(value != 'null') {
-					restriction[name] = value;
+				if(value != "null") {
+					options[optionRegExp[name]] = value;
 				}
 				else {
-					delete restriction[name];
+					delete options[optionRegExp[name]];
 				}
 			}
 			else {
@@ -134,10 +135,12 @@ define(function (require) {
 		},
 
 		/**
-		 * Reset the restriction for data querying.
+		 * Reset the options for data querying.
 		 */
-		resetRestriction: function() {
-			restriction = [];
+		resetOptions: function() {
+			$.each(options, function (index, value) {
+				delete options[index];
+			});
 		},
 
 		/**
@@ -150,11 +153,11 @@ define(function (require) {
 			var result = [],
 				option;
 
-			if(restriction.length != 0) {
-				option = restriction;
+			if(options.length != 0) {
+				option = options;
 			}
 			else {
-				option = '';
+				option = {};
 			}
 
 			$.ajax({
@@ -168,10 +171,10 @@ define(function (require) {
 
 					for (i = 0; i < length; i++) {
 						result[i] = new Array();
-						result[i]["id"] = data[i][options["id"]];
-						result[i]["name"] = data[i][options["name"]];
-						result[i]["date"] = data[i][options["date"]];
-						result[i]["error"] = data[i][options["error"]];
+						result[i]["id"] = data[i][optionRegExp["id"]];
+						result[i]["name"] = data[i][optionRegExp["name"]];
+						result[i]["date"] = data[i][optionRegExp["date"]];
+						result[i]["error"] = data[i][optionRegExp["error"]];
 					}
 				}
 			});
