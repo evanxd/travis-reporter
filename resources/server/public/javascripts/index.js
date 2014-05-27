@@ -1,9 +1,9 @@
-'use strict';
-
 $(document).ready(require(['button', 'container'], function(button, Container) {
-    // Variable initialization.
-    var test_container = new Container($("table.tb_header"));
-	test_container.init();
+	'use strict';
+
+	// Variable initialization.
+	var test_container = new Container($("table.tb_header"));
+	button.homePageButtonAction(test_container);
 	test_container.sort('error');
 
 	// Button action binding.
@@ -15,7 +15,7 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 	$('select').change(function() {
 		button.searchToolButtonAction($(this), test_container);
 		$('button.bt_detail').click(function() {
-			button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in'), test_container);
 		});
 	});
 	
@@ -29,22 +29,22 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 		button.homePageButtonAction(test_container);
 		button.addButtonFeedbackAction($("button.bt_detail"));
 		$('button.bt_detail').click(function() {
-			button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in'), test_container);
 		});
 	});
 
 	$('p.tab').click(function() {
 		button.tabButtonAction($(this), test_container);
-		if($(this).attr('id') == 'display0') {
+		if($(this).attr('id') === 'display0') {
 			button.homePageButtonAction(test_container);
 			button.addButtonFeedbackAction($("button.bt_detail"));
 			$('button.bt_detail').click(function() {
-				button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in'), test_container);
 			});
 		}
 	});
 
 	$('button.bt_detail').click(function() {
-		button.detailButtonAction($(this), $('div#info_box_tab'), $('div#info_box_in'), test_container, test_container.getData('name', $(this).parent().children('.name').text()));
+		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in'), test_container);
 	});
 }));

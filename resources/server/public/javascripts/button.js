@@ -1,6 +1,8 @@
-'use strict';
+define(function (require) {
+	'use strict';
 
-define(function () {
+	var queryTool = require("queryTool");
+
 	/**
 	 * Add actions to target button when the mouse roll in, roll out from it.
 	 * Roll in action: Highlight the target button.
@@ -58,13 +60,13 @@ define(function () {
 		$(target).hover(
 			function() {
 				var classAttr = $(this).attr('class');
-				if(classAttr.indexOf('.bt_pressed') == -1) {
+				if(classAttr.indexOf('.bt_pressed') === -1) {
 					$(this).addClass('bt_hover');
 				}
 			},
 			function() {
 				var classAttr = $(this).attr('class');
-				if(classAttr.indexOf('.bt_pressed') == -1) {
+				if(classAttr.indexOf('.bt_pressed') === -1) {
 					$(this).removeClass('bt_hover');
 				}
 			}
@@ -80,7 +82,7 @@ define(function () {
 	 */
 	function togglePressedFeedback(target) {
 		$(target).mousedown(function() {
-			if($(this).attr('class') != '.bt_pressed') {
+			if($(this).attr('class') !== '.bt_pressed') {
 				$(this.tagName.toLowerCase() + '.bt_pressed').removeClass('bt_pressed');
 				$(this).addClass('bt_pressed');
 			}
@@ -95,7 +97,7 @@ define(function () {
 		 * 
 		 * @param {DOM} target The target DOM object to be bound to these feedback actions.
 		 */
-		addButtonFeedbackAction: function(target) {
+		addButtonFeedbackAction: function (target) {
 			hoverFeedback(target);
 			pressFeedback(target);
 			releaseFeedback(target);
@@ -108,7 +110,7 @@ define(function () {
 		 * 
 		 * @param {DOM} target The target DOM object to be bound to these feedback actions.
 		 */
-		addToggleFeedbackAction: function(target) {
+		addToggleFeedbackAction: function (target) {
 			toggleHoverFeedback(target);
 			togglePressedFeedback(target);
 		},
@@ -118,7 +120,7 @@ define(function () {
 		 *
 		 * @param {DOM} target The target DOM object to remove the feedback actions.
 		 */
-		removeButtonFeedbackAction: function(target) {
+		removeButtonFeedbackAction: function (target) {
 			$(target).removeClass();
 		},
 
@@ -128,10 +130,12 @@ define(function () {
 		 * 
 		 * @param {Object} targetController The object handling the data to be shown.
 		 */
-		homePageButtonAction: function(targetController) {
-			targetController.resetRestriction();
+		homePageButtonAction: function (targetController) {
+			queryTool.resetOptions();
+			$("select").val("null");
+			queryTool.setOptions("error", 10);
 			targetController.clear();
-			targetController.appendData(targetController.query());
+			targetController.appendData(queryTool.query());
 			$('.img_sort').hide();
 		},
 
@@ -142,11 +146,11 @@ define(function () {
 		 * @param {DOM} clickedDOM The clicked header element.
 		 * @param {Object} targetController The object handling the data to be shown.
 		 */
-		headerButtonAction: function(clickedDOM, targetController) {
+		headerButtonAction: function (clickedDOM, targetController) {
 			var sortingType = targetController.sort($(clickedDOM).attr("axis")),
 				arrowToShown = null;
 			
-			if(sortingType == true) { // Large to small.
+			if(sortingType === true) { // Large to small.
 				arrowToShown = $(clickedDOM).children(".down");
 			}
 			else {
@@ -164,28 +168,28 @@ define(function () {
 		 * @param {DOM} clickedDOM The clicked pull-down menu element.
 		 * @param {Object} targetController The object handling the data to be shown.
 		 */
-		searchToolButtonAction: function(clickedDOM, targetController) {
-			targetController.setRestriction($(clickedDOM).attr('name'), $(clickedDOM).val());
+		searchToolButtonAction: function (clickedDOM, targetController) {
+			queryTool.setOptions($(clickedDOM).attr('name'), $(clickedDOM).val());
 			targetController.clear();
-			targetController.appendData(targetController.query());
+			targetController.appendData(queryTool.query());
 			this.addButtonFeedbackAction($("button.bt_detail"));
 		},
 
-		detailButtonAction: function(clickedDOM, targetTabContainer, targetContainer, targetController, data) {
-			var $tab = $('<span>');
-			var $content = $('<p>');
-
-			var count = $(targetTabContainer).children().last().children().attr('id');
-			count = parseInt(count.substr(count.length - 1)) + 1;
+		detailButtonAction: function (fileName, targetTabContainer, targetContainer, targetController) {
+			var $tab = $('<span>'),
+				$content = $('<p>'),
+				count = $(targetTabContainer).children().last().children().attr('id'),
+				callbackFunc = this.tabButtonAction;
+			
+			count = Number(count.substr(count.length - 1)) + 1;
 
 			$content.attr('id', 'tab' + count);
 			$content.attr('class', 'tab');
-			$content.append('Tab ' + count);
+			$content.append(fileName);
 
 			$tab.append($content);
 			this.addToggleFeedbackAction($content);
 			
-			var callbackFunc = this.tabButtonAction;
 			$content.click(function() {
 				callbackFunc(this, targetController);
 			});
@@ -207,7 +211,7 @@ define(function () {
 			});
 		},
 
-		tabButtonAction: function(thisDOM, targetController) {
+		tabButtonAction: function (thisDOM) {
 			$('div.display').hide();
 
 			var count = $(thisDOM).attr('id');
