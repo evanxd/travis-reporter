@@ -186,3 +186,14 @@ div#info_box_tab span p {
     border-bottom-right-radius: 0em;
     border-color: #282828;
 }
+
+.header {
+    background-color: #404040;
+}
+
+#chart_table {
+    position: relative;
+    height: 500px;
+    border: solid;
+    border-width: 0.2em;
+}
