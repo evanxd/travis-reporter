@@ -191,7 +191,7 @@ div#info_box_tab span p {
     background-color: #404040;
 }
 
-#chart_table {
+.chart_table {
     position: relative;
     height: 500px;
     border: solid;

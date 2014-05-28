@@ -49,9 +49,7 @@ define(function () {
 		 * Reset the options for data querying.
 		 */
 		resetOptions: function() {
-			$.each(options, function (index) {
-				delete options[index];
-			});
+			options = {};
 		},
 
 		/**

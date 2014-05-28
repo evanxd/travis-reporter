@@ -1,8 +1,10 @@
-$(document).ready(require(['button', 'container'], function (button, Container) {
+$(document).ready(require(['button', 'container', 'detail'], function (button, Container, DetailPageHandler) {
 	'use strict';
 
 	// Variable initialization.
-	var test_container = new Container($("table.tb_header"));
+	var test_container = new Container($("table.tb_header")),
+		detailPageHandlers = [];
+	
 	button.homePageButtonAction(test_container);
 	test_container.sort('error');
 
@@ -19,6 +21,7 @@ $(document).ready(require(['button', 'container'], function (button, Container) 
 		button.searchToolButtonAction($(this), test_container);
 		$('button.bt_detail').click(function() {
 			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
+			detailPageHandlers.push(new DetailPageHandler($("div.display").last()));
 		});
 	});
 	
@@ -33,6 +36,7 @@ $(document).ready(require(['button', 'container'], function (button, Container) 
 		button.addButtonFeedbackAction($("button.bt_detail"));
 		$('button.bt_detail').click(function() {
 			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
+			detailPageHandlers.push(new DetailPageHandler($("div.display").last()));
 		});
 	});
 
@@ -43,11 +47,13 @@ $(document).ready(require(['button', 'container'], function (button, Container) 
 			button.addButtonFeedbackAction($("button.bt_detail"));
 			$('button.bt_detail').click(function() {
 				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
+				detailPageHandlers.push(new DetailPageHandler($("div.display").last()));
 			});
 		}
 	});
 
 	$('button.bt_detail').click(function() {
 		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction);
+		detailPageHandlers.push(new DetailPageHandler($("div.display").last(), Container));
 	});
 }));
