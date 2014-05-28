@@ -6,7 +6,12 @@ A reporter to show the unstable Travis actions.
 
 Makefile
 ===============================================
-This is a documentation about the supported target and its usage
+This is a documentation about the supported target and its usage.
+You need to install npm first.
+
+Run Server
+-------------------------------------------------
+`make run` - We would set all the enviorment and establish the database server and  travis-reporter server.
 
 Setup db
 ------------------------------------------------
@@ -14,9 +19,6 @@ You should close your init mongodb service if you have installed mongodb.
 
 `make db` - We would setup mongodb and link to our database of travis-reporter.
 
-Run Server
--------------------------------------------------
-`make run` - We would set all the enviorment and establish the database server and  travis-reporter server.
 
 Clean all stuff
 --------------------------------------------------
