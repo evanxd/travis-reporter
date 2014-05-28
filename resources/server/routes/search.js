@@ -12,11 +12,11 @@ router.get('/',function(req, res) {
 	{
 		result.find({fileName : req.query.fileName});
 	}
-	if(req.query.range!=null){
+	if(req.query.date!=null){
 		//result = repoter.find({})
 		var now = new Date();
 		var dayOfMonth = now.getDate();
-		now.setDate(dayOfMonth - req.query.range);
+		now.setDate(dayOfMonth - req.query.date);
 		var range = now.getFullYear() + "-" +(now.getMonth()<10 ? '0' : '')+(now.getMonth()+1)+ "-" + now.getDate();
 		result.where('date').gte(range);
 	}
