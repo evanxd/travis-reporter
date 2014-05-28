@@ -11,11 +11,14 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 	button.addButtonFeedbackAction('button, th.tb_header');
 	button.addToggleFeedbackAction('.tab');
 
+	// Initializes home page tab to pressed.
+	$("#tab0").addClass('bt_pressed');
+
 	// Binding searching action to search tools (pull-down menus).
 	$('select').change(function() {
 		button.searchToolButtonAction($(this), test_container);
 		$('button.bt_detail').click(function() {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in'), test_container);
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
 		});
 	});
 	
@@ -29,7 +32,7 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 		button.homePageButtonAction(test_container);
 		button.addButtonFeedbackAction($("button.bt_detail"));
 		$('button.bt_detail').click(function() {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in'), test_container);
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
 		});
 	});
 
@@ -39,12 +42,12 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 			button.homePageButtonAction(test_container);
 			button.addButtonFeedbackAction($("button.bt_detail"));
 			$('button.bt_detail').click(function() {
-				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in'), test_container);
+				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
 			});
 		}
 	});
 
 	$('button.bt_detail').click(function() {
-		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in'), test_container);
+		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
 	});
 }));

@@ -128,6 +128,12 @@ define(function (require) {
 			targetController.clear();
 			targetController.appendData(queryTool.query());
 			$('.img_sort').hide();
+
+			$('div.display').hide();
+			$('div#display0').show();
+
+			$("p.bt_pressed").removeClass('bt_pressed');
+			$("#tab0").addClass('bt_pressed');
 		},
 
 		/**
@@ -174,13 +180,16 @@ define(function (require) {
 
 			$content.attr('id', 'tab' + count);
 			$content.attr('class', 'tab');
+			$content.attr('class', 'bt_pressed');
 			$content.append(fileName);
+
+			$("p.tab").removeClass('bt_pressed');
 
 			$tab.append($content);
 			this.addToggleFeedbackAction($content);
 			
 			$content.click(function() {
-				callbackFunc(this, targetController);
+				callbackFunc(this);
 			});
 			
 			$(targetTabContainer).append($tab);
@@ -201,7 +210,7 @@ define(function (require) {
 		},
 
 		tabButtonAction: function (thisDOM) {
-			$('div.display').hide();
+			$('div.display').not(":hidden").hide();
 
 			var count = $(thisDOM).attr('id');
 			count = count.substr(count.length - 1);
