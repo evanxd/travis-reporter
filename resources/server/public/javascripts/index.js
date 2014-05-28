@@ -1,4 +1,4 @@
-$(document).ready(require(['button', 'container'], function(button, Container) {
+$(document).ready(require(['button', 'container'], function (button, Container) {
 	'use strict';
 
 	// Variable initialization.
@@ -48,6 +48,6 @@ $(document).ready(require(['button', 'container'], function(button, Container) {
 	});
 
 	$('button.bt_detail').click(function() {
-		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
+		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction);
 	});
 }));

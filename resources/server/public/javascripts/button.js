@@ -170,7 +170,7 @@ define(function (require) {
 			this.addButtonFeedbackAction($("button.bt_detail"));
 		},
 
-		detailButtonAction: function (fileName, targetTabContainer, targetContainer, targetController) {
+		detailButtonAction: function (fileName, targetTabContainer, targetContainer, targetController, callback) {
 			var $tab = $('<span>'),
 				$content = $('<p>'),
 				count = $(targetTabContainer).children().last().children().attr('id'),
@@ -206,6 +206,8 @@ define(function (require) {
 				$detail.append(data);
 				$(targetContainer).children('div.display').hide();
 				$(targetContainer).append($detail);
+				
+				callback($('div#display' + count).find('button, th.tb_header'));
 			});
 		},
 
