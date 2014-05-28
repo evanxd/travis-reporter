@@ -1,15 +1,16 @@
-define(function (require) {
+define(['googleChart', 'container'], function (GoogleChart, Container) {
 	'use strict';
-
-	var bt = require('button');
-	var Con = require('container');
 
 	function DetailPageHandler(targetDOM) {
 		this.target = targetDOM;
+		this.container = new Container($(this.target).find("table.tb_header"));
+		this.chartTool = new GoogleChart($(this.target).find("td.chart_table"));
+	}
 
-		this.test_container = new Con($(this.target).find("table.tb_header"));
+	DetailPageHandler.prototype = {
+		drawChart: function (data) {
 
-		bt.addButtonFeedbackAction($(this.target).find('button, th.tb_header'));
+		}
 	}
 
 	return DetailPageHandler;
