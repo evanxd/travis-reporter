@@ -1,7 +1,6 @@
 define(["chart"], function (chart) {
 	'use strict';
-	var chart = null,
-		lineChartOptions = {
+	var lineChartOptions = {
 			fillColor : "rgba(255, 0, 0, 0.5)",
 			strokeColor : "rgba(255, 0, 0, 1)",
 			pointColor : "rgba(255, 0, 0, 1)",
@@ -103,11 +102,13 @@ define(["chart"], function (chart) {
 		 * Rows of chart = inputData.errorCounts.
 		 */
 		drawChart: function (target, inputData) {
+			var chart = null,
+				ctx = $(target)[0].getContext("2d");
+			
 			data.labels = inputData.dates;
 			lineChartOptions.data = inputData.errorCounts;
 			data.datasets = [lineChartOptions];
-			chart = null;
-			chart = new Chart($(target)[0].getContext("2d")).Line(data, options);
+			chart = new Chart(ctx).Line(data, options);
 		}
 	};
 });

@@ -9,14 +9,26 @@ define(['chartTool', 'container'], function (chartTool, DataContainer) {
 
 	DetailPageHandler.prototype = {
 		drawChart: function (data) {
-			$.each(data, function (index, value) {
-				console.log(index, value.length);
+			var tempDates = [],
+				tempErrorCounts = [],
+				i,
+				max = data.length;
+
+			for (i = 0; i < max; i += 1) {
+				tempDates.push(data[i].date);
+				tempErrorCounts.push(data[i].error);
+			}
+
+			chartTool.drawChart($(this.target).find("canvas.chart_table"), {
+				dates : tempDates,
+				errorCounts : tempErrorCounts
 			});
 
-			chartTool.drawChart($(this.target).find(".chart_table"), {
-				dates : ["day1", "day2", "day3", "day4", "day5", "day5", "day5", "day5"],
-				errorCounts : [10, 40, 50, 20, 30, 60, 90, 20]
+			//Temp codes for testing.
+			$.each(data, function (index, value) {
+				delete value.name;
 			});
+			this.container.appendData(data);
 		}
 	}
 
