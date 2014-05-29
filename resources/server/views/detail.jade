@@ -28,54 +28,26 @@ div(id="info_box", class="panel")
         td(class="header")
           p Line chart
       tr
-        td(class="chart_table")
+        td
+          canvas(class="chart_table")
       tr
         td(class="header")
-          p Job list history
+          p History
       tr
         td
           table(class="tb_header")
             tr(class="tb_header")
-              th(class="tb_header")
-                p
-                  span Status
-                  img(src="/images/arrow_down.png", alt="sort")
-              th(class="tb_header")
-                p
-                  span Build
-                  img(src="images/arrow_down.png", alt="sort")
-              th(class="tb_header")
-                p
-                  span Message
-                  img(src="/images/arrow_down.png", alt="sort")
-              th(class="tb_header")
-                p
-                  span Commit
-                  img(src="/images/arrow_down.png", alt="sort")
-              th(class="tb_header")
-                p
-                  span Committer
-                  img(src="/images/arrow_down.png", alt="sort")
-              th(class="tb_header")
-                p
-                  span Duration
-                  img(src="/images/arrow_down.png", alt="sort")
-              th(class="tb_header")
-                p
-                  span Finished
-                  img(src="/images/arrow_down.png", alt="sort")
+              th(axis="date", class="tb_header")
+                span Date
+                img(class="img_sort up", src="images/arrow_up.png", alt="sort")
+                img(class="img_sort down", src="images/arrow_down.png", alt="sort")
+              th(axis="error", class="tb_header")
+                span Error count
+                img(class="img_sort up", src="images/arrow_up.png", alt="sort")
+                img(class="img_sort down", src="images/arrow_down.png", alt="sort")
+              th(class="tb_last")
             tr(class="tb_info_bar")
               td(class="tb_info_bar_status")
-                p Passed
+                p Date1
               td(class="tb_info_bar_build")
-                p 114
-              td(class="tb_info_bar_message")
-                p Merge pull request #89 from fdelapena/master
-              td(class="tb_info_bar_commit")
-                p 42e2691 (master)
-              td(class="tb_info_bar_committer")
-                p Francisco de la Peña
-              td(class="tb_info_bar_duration")
-                p 7 min 3 sec
-              td(class="tb_info_bar_finished")
-                p 6 minutes ago
+                p 100
