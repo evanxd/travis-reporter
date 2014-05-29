@@ -1,7 +1,7 @@
-define(function (require) {
+define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 	'use strict';
 
-	var queryTool = require("queryTool");
+	var detailPageHandlers = [];
 
 	/**
 	 * Add actions to target button when the mouse roll in, roll out from it.
@@ -208,6 +208,10 @@ define(function (require) {
 				$(targetContainer).append($detail);
 				
 				callback($('div#display' + count).find('button, th.tb_header'));
+
+				queryTool.resetOptions();
+				queryTool.setOptions('name', fileName);
+				detailPageHandlers.push(new DetailPageHandler($detail, fileName).drawChart(queryTool.query()));
 			});
 		},
 
