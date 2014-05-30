@@ -209,6 +209,8 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 				
 				callback($('div#display' + count).find('button, th.tb_header'));
 
+				queryTool.resetOptions();
+				queryTool.setOptions("name", fileName);
 				detailPageHandlers.push(new DetailPageHandler($detail, fileName).drawChart(queryTool.query()));
 			});
 		},
