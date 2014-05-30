@@ -16,33 +16,41 @@ $(document).ready(require(['button', 'container'], function (button, DataContain
 	$("#tab0").addClass('bt_pressed');
 
 	// Binding searching action to search tools (pull-down menus).
-	$('select').change(function() {
-		button.searchToolButtonAction($(this), test_container);
-		$('button.bt_detail').click(function() {
+	$('select').change(function () {
+		button.searchToolButtonAction($(this).attr('name'), $(this).val(), test_container);
+		$('button.bt_detail').click(function () {
 			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
 		});
 	});
 	
-	// Binding sorting action to the headers of data bars.
-	$('th.tb_header').click(function() {
-		button.headerButtonAction($(this), test_container);
-	});
-
-	// Binding home page action to home page button.
-	$('button#bt_home').click(function() {
-		button.homePageButtonAction(test_container);
-		button.addButtonFeedbackAction($("button.bt_detail"));
-		$('button.bt_detail').click(function() {
+	// Binding searching action to search button.
+	$('button#bt_search').click(function () {
+		button.searchToolButtonAction("name", $("input#search").attr("value"), test_container);
+		$('button.bt_detail').click(function () {
 			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
 		});
 	});
 
-	$('p.tab').click(function() {
+	// Binding sorting action to the headers of data bars.
+	$('th.tb_header').click(function () {
+		button.headerButtonAction($(this), test_container);
+	});
+
+	// Binding home page action to home page button.
+	$('button#bt_home').click(function () {
+		button.homePageButtonAction(test_container);
+		button.addButtonFeedbackAction($("button.bt_detail"));
+		$('button.bt_detail').click(function () {
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
+		});
+	});
+
+	$('p.tab').click(function () {
 		button.tabButtonAction($(this), test_container);
 		if($(this).attr('id') === 'display0') {
 			button.homePageButtonAction(test_container);
 			button.addButtonFeedbackAction($("button.bt_detail"));
-			$('button.bt_detail').click(function() {
+			$('button.bt_detail').click(function () {
 				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
 			});
 		}
