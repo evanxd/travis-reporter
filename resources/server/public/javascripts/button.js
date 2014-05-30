@@ -163,8 +163,8 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 		 * @param {DOM} clickedDOM The clicked pull-down menu element.
 		 * @param {Object} targetController The object handling the data to be shown.
 		 */
-		searchToolButtonAction: function (clickedDOM, targetController) {
-			queryTool.setOptions($(clickedDOM).attr('name'), $(clickedDOM).val());
+		searchToolButtonAction: function (name, value, targetController) {
+			queryTool.setOptions(name, value);
 			targetController.clear();
 			targetController.appendData(queryTool.query());
 			this.addButtonFeedbackAction($("button.bt_detail"));
