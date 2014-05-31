@@ -7,8 +7,10 @@ A reporter to show the unstable Travis actions.
 Makefile
 ===============================================
 This is a documentation about the supported target and its usage.
-* You need to install npm first.
-* It support the Ubuntu System
+* You need to install the tool first.
+    * npm 1.4.9
+    * node v0.10.28
+* It support the Ubuntu System.
 * It will use port 3000 and 27017 for server.
 
 Run Server
