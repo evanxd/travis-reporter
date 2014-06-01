@@ -22,17 +22,19 @@ function doRepo(time,callback){
   owner_name: owner,
   name: reponame
   }, function (err, res) {
-    var BUILD_IDS = res.builds;
-    for(i in BUILD_IDS){
-      var finishTime = BUILD_IDS[i].finished_at;
-      if(finishTime > time || (time==null&&finishTime!=null)){
-        if(finishTime>timeTemp||timeTemp==null){
-          timeTemp = finishTime;
+    if(res.builds!=null){
+      var BUILD_IDS = res.builds;
+      for(i in BUILD_IDS){
+        var finishTime = BUILD_IDS[i].finished_at;
+        if(finishTime > time || (time==null&&finishTime!=null)){
+          if(finishTime>timeTemp||timeTemp==null){
+            timeTemp = finishTime;
+          }
+          doBuild(BUILD_IDS[i].id);
         }
-        doBuild(BUILD_IDS[i].id);
       }
+    callback(timeTemp);
     }
-  callback(timeTemp);
   });
 }
 
@@ -40,46 +42,58 @@ function doBuild(BUILD_ID){
   travis.builds({
     id: BUILD_ID
   }, function(err, res){
-    for(var i in res.build.job_ids){
-      var JOB_ID = res.build.job_ids[i];
-      var time = res.build.finished_at.slice(0,10);
-      var errorname = doJob(JOB_ID,time);
+    if(res.build!=null){
+      for(var i in res.build.job_ids){
+        var JOB_ID = res.build.job_ids[i];
+        var time = res.build.finished_at.slice(0,10);
+          doJob(JOB_ID,time,BUILD_ID);  
+      }
     }
   });
 }
 
-function doJob(JOB_ID,time){
+function doJob(JOB_ID,time,build){
   travis.jobs({
     id: JOB_ID
   }, function(err, res){
-    var LOG_ID = res.job.log_id;
-    doLog(LOG_ID,time);
+    if(res.job!=null){
+      var LOG_ID = res.job.log_id;
+      var action = res.job.config.env;
+      if(action=="CI_ACTION=marionette_js"){
+        doLog(LOG_ID,time,build);
+      }
+    }
   });
 }
 
-function doLog(LOG_ID,time){
+function doLog(LOG_ID,time,build){
   travis.logs({
     id :LOG_ID
   }, function(err,res){
     var result = parser.findErrFile(res.log.body);
     if(result!=null){
-      doJson(result.sort(),time);
+      result = jsonSort(result);
+      doJson(result,time,build);
     }
   });
 }
 
-function doJson(errfile,time){
-  var error=errfile[0],counts=0;
-  var length=errfile.length;
+
+function doJson(errfile,time,build){
+  var errName=errfile.Name[0],errPath=errfile.Path[0],counts=0;
+  var length = errfile.length;
   for(i=0;i<=length;i++){
-    if(error!=errfile[i]){
+    if(errName!=errfile.Name[i]){
       var result = {
+        "buildID" : build,
         "date" : time, 
-        "fileName" : error, 
+        "fileName" : errName,
+        "filePath" : errPath,
         "errCount" : counts
       }
       outJson(result);
-      error=errfile[i];
+      errName=errfile.Name[i];
+      errPath=errfile.Path[i];
       counts=1;
     }
     else{
@@ -87,6 +101,26 @@ function doJson(errfile,time){
     }
   }
 }
+
+//send out the result json to the database
 function outJson(result){
   update.update(result);
+}
+
+function jsonSort(json){
+  var temp;
+  var length = json.length;
+  for (var x=length; x>1; x--){
+    for (var y=0;y<x-1;y++){
+      if(json.Name[y]>json.Name[y+1]){
+        temp = json.Name[y];
+        json.Name[y] = json.Name[y+1];
+        json.Name[y+1] = temp;
+        temp = json.Path[y];
+        json.Path[y] = json.Path[y+1];
+        json.Path[y+1] = temp;
+      }
+    }
+  }
+  return json;
 }
