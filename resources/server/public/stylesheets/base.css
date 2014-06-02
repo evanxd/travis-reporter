@@ -107,6 +107,7 @@ button {
 
 .bt_hover {
 	background-color: rgba(255, 255, 255, 0.5);	
+    cursor: pointer;
 }
 
 .bt_pressed {
@@ -179,7 +180,6 @@ div#info_box_tab span p {
     padding-left: 0.3em;
     padding-right: 0.3em;
     padding-top: 0.5em;
-    cursor: pointer;
     border: solid;
     border-radius: 0.5em;
     border-bottom-left-radius: 0em;
