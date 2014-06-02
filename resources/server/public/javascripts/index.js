@@ -37,6 +37,7 @@ $(document).ready(require(['button', 'container'], function (button, DataContain
 	});
 
 	// Binding home page action to home page button.
+	/*
 	$('button#bt_home').click(function () {
 		button.homePageButtonAction(test_container);
 		button.addButtonFeedbackAction($("button.bt_detail"));
@@ -44,6 +45,7 @@ $(document).ready(require(['button', 'container'], function (button, DataContain
 			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
 		});
 	});
+	*/
 
 	$('p.tab').click(function () {
 		button.tabButtonAction($(this), test_container);
