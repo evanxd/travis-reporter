@@ -6,7 +6,9 @@ var Schema=mongoose.Schema;
 */
 var repoter=new Schema(
 {
+	buildID:Number,
 	fileName:String,
+	filePath:String,
 	errCount:Number, 
 	date:String
 },{versionKey: false});
