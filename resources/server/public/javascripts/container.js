@@ -61,7 +61,7 @@ define(["dataBar"], function (DataBar) {
 
 				$btDetail = $("<button>");
 				$btDetail.attr("id", "bt_detail_no" + data[i].id);
-				$btDetail.attr("class", "bt_detail");
+				$btDetail.attr("class", "bt_detail bt");
 				$btDetail.append("Detail");
 
 				for (key in data[i]) {
