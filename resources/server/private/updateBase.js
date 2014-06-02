@@ -9,7 +9,7 @@ db.once('open',function callback(){
 });*/
 module.exports={
 update:function (json){
-	data.findOne({date:json.date,fileName:json.fileName}).exec(function(err,ob){
+	data.findOne({buildID:json.buildID,date:json.date,fileName:json.fileName}).exec(function(err,ob){
 		if(err){
 			console.error(err);
 			insertData(json);
@@ -17,7 +17,7 @@ update:function (json){
 		else{
 			if(ob!=null){
 			ob.errCount+=json.errCount;
-			data.remove({date:json.date,fileName:ob.fileName})
+			data.remove({buildID:json.buildID,date:json.date,fileName:ob.fileName})
 			.exec(insertData(ob));
 			}
 			else
@@ -28,8 +28,8 @@ update:function (json){
 ,
 }
 function insertData(json){
-	var test = new data({date:json.date,
-	fileName:json.fileName,errCount:json.errCount});
+	var test = new data({buildID:json.buildID,date:json.date,
+	fileName:json.fileName,filePath:json.filePath,errCount:json.errCount});
 	test.save();
 	}
 
