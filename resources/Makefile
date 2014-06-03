@@ -1,4 +1,4 @@
-ROOTDIR=./server
+ROOTDIR=./
 DATADIR=./database
 DBDIR=/usr/bin/mongod
 run: clean db service
