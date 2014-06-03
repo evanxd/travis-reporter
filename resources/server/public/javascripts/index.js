@@ -1,9 +1,10 @@
-$(document).ready(require(['button', 'container'], function (button, DataContainer) {
+$(document).ready(require(['button', 'container'], function (Button, DataContainer) {
 	'use strict';
 
 	// Variable initialization.
-	var test_container = new DataContainer($("table.tb_header"));
-	
+	var test_container = new DataContainer($("table.tb_header")),
+		button = new Button();
+
 	button.homePageButtonAction(test_container);
 	test_container.sort('error');
 
