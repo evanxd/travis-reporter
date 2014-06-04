@@ -1,15 +1,16 @@
-$(document).ready(require(['button', 'container'], function (button, DataContainer) {
+$(document).ready(require(['button', 'container'], function (Button, DataContainer) {
 	'use strict';
 
 	// Variable initialization.
-	var test_container = new DataContainer($("table.tb_header"));
-	
+	var test_container = new DataContainer($("table.tb_header")),
+		button = new Button();
+
 	button.homePageButtonAction(test_container);
 	test_container.sort('error');
 
 	// Button action binding.
 	// Binding feedback actions.
-	button.addButtonFeedbackAction('button, th.tb_header');
+	button.addButtonFeedbackAction('button, th.tb_header, #title');
 	button.addToggleFeedbackAction('.tab');
 
 	// Initializes home page tab to pressed.
@@ -19,7 +20,7 @@ $(document).ready(require(['button', 'container'], function (button, DataContain
 	$('select').change(function () {
 		button.searchToolButtonAction($(this).attr('name'), $(this).val(), test_container);
 		$('button.bt_detail').click(function () {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 		});
 	});
 	
@@ -27,7 +28,7 @@ $(document).ready(require(['button', 'container'], function (button, DataContain
 	$('button#bt_search').click(function () {
 		button.searchToolButtonAction("name", $("input#search").attr("value"), test_container);
 		$('button.bt_detail').click(function () {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 		});
 	});
 
@@ -37,11 +38,11 @@ $(document).ready(require(['button', 'container'], function (button, DataContain
 	});
 
 	// Binding home page action to home page button.
-	$('button#bt_home').click(function () {
+	$('#title').click(function () {
 		button.homePageButtonAction(test_container);
 		button.addButtonFeedbackAction($("button.bt_detail"));
 		$('button.bt_detail').click(function () {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 		});
 	});
 
@@ -51,12 +52,12 @@ $(document).ready(require(['button', 'container'], function (button, DataContain
 			button.homePageButtonAction(test_container);
 			button.addButtonFeedbackAction($("button.bt_detail"));
 			$('button.bt_detail').click(function () {
-				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container);
+				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 			});
 		}
 	});
 
 	$('button.bt_detail').click(function() {
-		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction);
+		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 	});
 }));

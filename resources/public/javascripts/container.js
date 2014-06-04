@@ -1,4 +1,5 @@
 /**
+ * This Javascript file returns "Container" as a class.
  * This class provides API to perform manipulation of test file bars
  * such as appending, detaching, and sorting test file bars on Travis-reporter.
  */
@@ -36,7 +37,7 @@ define(["dataBar"], function (DataBar) {
 			"type": large_to_small,
 			"option": null
 		};
-	}
+	};
 
 	/**
 	 * @public The following functions and variables are public.
@@ -61,7 +62,7 @@ define(["dataBar"], function (DataBar) {
 
 				$btDetail = $("<button>");
 				$btDetail.attr("id", "bt_detail_no" + data[i].id);
-				$btDetail.attr("class", "bt_detail");
+				$btDetail.attr("class", "bt_detail bt");
 				$btDetail.append("Detail");
 
 				for (key in data[i]) {
@@ -148,6 +149,9 @@ define(["dataBar"], function (DataBar) {
 			return this.sortConfigure.type;
 		},
 
+		/**
+		 * Sort data from large to small.
+		 */
 		sortingL2S: function () {
 			var hasChange = true,
 				value01,
@@ -178,6 +182,9 @@ define(["dataBar"], function (DataBar) {
 			}
 		},
 
+		/**
+		 * Sort data from small to large.
+		 */
 		sortingS2L: function () {
 			var hasChange = true,
 				value01,

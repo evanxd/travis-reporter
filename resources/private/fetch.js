@@ -60,32 +60,33 @@ function doJob(JOB_ID,time,build){
       var LOG_ID = res.job.log_id;
       var action = res.job.config.env;
       if(action=="CI_ACTION=marionette_js"){
-        doLog(LOG_ID,time,build);
+        doLog(LOG_ID,time,build,JOB_ID);
       }
     }
   });
 }
 
-function doLog(LOG_ID,time,build){
+function doLog(LOG_ID,time,build,job){
   travis.logs({
     id :LOG_ID
   }, function(err,res){
     var result = parser.findErrFile(res.log.body);
     if(result!=null){
       result = jsonSort(result);
-      doJson(result,time,build);
+      doJson(result,time,build,job);
     }
   });
 }
 
 
-function doJson(errfile,time,build){
+function doJson(errfile,time,build,job){
   var errName=errfile.Name[0],errPath=errfile.Path[0],counts=0;
   var length = errfile.length;
   for(i=0;i<=length;i++){
     if(errName!=errfile.Name[i]){
       var result = {
         "buildID" : build,
+        "jobID" : job,
         "date" : time, 
         "fileName" : errName,
         "filePath" : errPath,
