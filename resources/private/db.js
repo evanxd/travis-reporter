@@ -8,8 +8,8 @@ var repoter=new Schema(
 {
 	buildID:Number,
 	jobID:Number,
-	filePath:String,
-	date:String
+	date:String,
+	filePath:String
 },{versionKey: false});
 mongoose.model('data',repoter);
 //connect to mongodb , select database "myData"
