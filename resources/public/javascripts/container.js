@@ -126,7 +126,7 @@ define(["dataBar"], function (DataBar) {
 					this.sortConfigure.option = option;
 					this.sortConfigure.type = large_to_small;
 				}
-				
+
 				// Choose sorting function and execute it.
 				if (this.sortConfigure.type === large_to_small) {
 					this.sortingL2S();
