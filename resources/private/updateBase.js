@@ -6,7 +6,7 @@ insertData:function (json){
 	var insData = new data({buildID:json.buildID,jobID:json.jobID,date:json.date,
 	filePath:json.filePath});
 	insData.save();
-	};
+	}
 }
 /*update:function (json){
 	data.findOne({buildID:json.buildID,date:json.date,fileName:json.fileName}).exec(function(err,ob){
