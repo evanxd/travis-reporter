@@ -20,7 +20,7 @@ $(document).ready(require(['button', 'container'], function (Button, DataContain
 	$('select').change(function () {
 		button.searchToolButtonAction($(this).attr('name'), $(this).val(), test_container);
 		$('button.bt_detail').click(function () {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction);
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 		});
 	});
 	
@@ -28,7 +28,7 @@ $(document).ready(require(['button', 'container'], function (Button, DataContain
 	$('button#bt_search').click(function () {
 		button.searchToolButtonAction("name", $("input#search").attr("value"), test_container);
 		$('button.bt_detail').click(function () {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction);
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 		});
 	});
 
@@ -42,7 +42,7 @@ $(document).ready(require(['button', 'container'], function (Button, DataContain
 		button.homePageButtonAction(test_container);
 		button.addButtonFeedbackAction($("button.bt_detail"));
 		$('button.bt_detail').click(function () {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction);
+			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 		});
 	});
 
@@ -52,12 +52,12 @@ $(document).ready(require(['button', 'container'], function (Button, DataContain
 			button.homePageButtonAction(test_container);
 			button.addButtonFeedbackAction($("button.bt_detail"));
 			$('button.bt_detail').click(function () {
-				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction);
+				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 			});
 		}
 	});
 
 	$('button.bt_detail').click(function() {
-		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction);
+		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'), test_container, button.addButtonFeedbackAction, button.headerButtonAction);
 	});
 }));
