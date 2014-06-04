@@ -7,9 +7,8 @@ var Schema=mongoose.Schema;
 var repoter=new Schema(
 {
 	buildID:Number,
-	fileName:String,
+	jobID:Number,
 	filePath:String,
-	errCount:Number, 
 	date:String
 },{versionKey: false});
 mongoose.model('data',repoter);
