@@ -146,16 +146,24 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			 */
 			homePageButtonAction: function (targetController) {
 				queryTool.resetOptions();
+
+				// Reset all pull-down menu to "none".
 				$("select").val("null");
+
+				// Initializes the "count" pull-down menu to "10".
 				$("select[name='count']").val(10);
-				queryTool.setOptions("count", 10);
-				targetController.clear();
-				targetController.appendData(queryTool.query());
+				
+				// Update the test file container and show data to user.
+				instance.searchToolButtonAction("count", 10, targetController);
+
+				// Reset arrows on headers.
 				$('.img_sort').hide();
 
+				// Reset to home page.
 				$('div.display').hide();
 				$('div#display0').show();
 
+				// Reset all tabs and let home page tab be pressed.
 				$("p.bt_pressed").removeClass('bt_pressed');
 				$("#tab0").addClass('bt_pressed');
 			},
@@ -167,9 +175,12 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			 * @param {Object} targetController The object handling the data to be shown.
 			 */
 			headerButtonAction: function (clickedDOM, targetController) {
-				var sortingType = targetController.sort($(clickedDOM).attr("axis")),
+				var pressedColumn = $(clickedDOM).attr("axis"),
+					sortingType = null,
 					arrowToShown = null;
-			
+				
+				sortingType = targetController.sort(pressedColumn);
+
 				if(sortingType === true) { // Large to small.
 					arrowToShown = $(clickedDOM).children(".down");
 				}
@@ -177,7 +188,10 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 					arrowToShown = $(clickedDOM).children(".up");
 				}
 
+				// Hide shown arrow on header.
 				$(".img_sort").hide();
+
+				// Display the appropriate arrow in header.
 				$(arrowToShown).slideToggle("fast");
 			},
 
@@ -191,7 +205,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 				queryTool.setOptions(name, value);
 				targetController.clear();
 				targetController.appendData(queryTool.query());
-				this.addButtonFeedbackAction($("button.bt_detail"));
+				instance.addButtonFeedbackAction($("button.bt_detail"));
 			},
 
 			/**
@@ -200,18 +214,17 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			 * test file clicked, also generate a new div place to show the detail information
 			 * of the clicked test file.
 			 * @param {String} fileName The file name of clicked test file.
-			 * @param {DOM} targetTabContainer The DOM element which is used to store tabs.
-			 * @param {DOM} targetContainer The DOM element which is used to display test file
+			 * @param {DOM} tabBar The DOM element which is used to store tabs.
+			 * @param {DOM} informationArea The DOM element which is used to display test file
 			 * or detail charts and history.
-			 * @param {Object} targetController The test file bar controller.
-			 * @param {Function} callback The callback function to be executed.
 			 */
-			detailButtonAction: function (fileName, targetTabContainer, targetContainer, targetController, callback, callback2) {
+			detailButtonAction: function (fileName, tabBar, informationArea) {
 				var $tab = $('<span>'),
 					$content = $('<p>'),
-					count = $(targetTabContainer).children().last().children().attr('id'),
-					callbackFunc = this.tabButtonAction;
+					count = $(tabBar).children().last().children().attr('id');
 				
+				// Retrieve the number of the id of ckicked tab.
+				// Example: tab1 -> 1.
 				count = Number(count.substr(count.length - 1)) + 1;
 
 				$content.attr('id', 'tab' + count);
@@ -219,16 +232,21 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 				$content.attr('class', 'bt_pressed');
 				$content.append(fileName);
 
+				// Reset all tabs to unclicked.
 				$("p.tab").removeClass('bt_pressed');
 
 				$tab.append($content);
-				this.addToggleFeedbackAction($content);
-			
+
+				// Enable the new tab to perform feedbacks.
+				instance.addToggleFeedbackAction($content);
+
+				// Bind the new tab to appropriate function when clicked.
 				$content.click(function() {
-					callbackFunc(this);
+					instance.tabButtonAction(this);
 				});
-			
-				$(targetTabContainer).append($tab);
+
+				// Add this new tab to tab bar.
+				$(tabBar).append($tab);
 			
 				$.ajax({
 					url: '/detail',
@@ -240,10 +258,10 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 					$detail.attr('class', 'display');
 
 					$detail.append(data);
-					$(targetContainer).children('div.display').hide();
-					$(targetContainer).append($detail);
+					$(informationArea).children('div.display').hide();
+					$(informationArea).append($detail);
 				
-					callback($('div#display' + count).find('button, th.tb_header'));
+					instance.addButtonFeedbackAction($('div#display' + count).find('button, th.tb_header'));
 
 					queryTool.resetOptions();
 					queryTool.setOptions("filePath", fileName);
@@ -251,7 +269,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 					
 					detailPageHandlers[detailPageHandlers.length - 1].drawChart();
 					$("div#display" + count).find("th.tb_header").click(function() {
-						callback2($(this), detailPageHandlers[detailPageHandlers.length - 1].getContainer());
+						instance.headerButtonAction(this, detailPageHandlers[detailPageHandlers.length - 1].getContainer());
 					});
 				});
 			},
@@ -260,14 +278,19 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			 * The corresponding function of the clicked tab.
 			 * This function is used to switch the display area corresponds to the
 			 * clicked tab DOM.
-			 * @param {DOM} cliekedDOM the clicked DOM.
+			 * @param {DOM} cliekedTab the clicked tab.
 			 */
-			tabButtonAction: function (cliekedDOM) {
+			tabButtonAction: function (cliekedTab) {
+				// Hide all unhided display area.
 				$('div.display').not(":hidden").hide();
 
-				var count = $(cliekedDOM).attr('id');
+				var count = $(cliekedTab).attr('id');
+
+				// Retrieve the number of the id of ckicked tab.
+				// Example: tab1 -> 1.
 				count = count.substr(count.length - 1);
 
+				// Show the corresponding information area to the clicked tab.
 				$('div#display' + count).show();
 			}
 		};
