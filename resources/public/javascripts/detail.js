@@ -1,34 +1,42 @@
 define(['chartTool', 'container'], function (chartTool, DataContainer) {
 	'use strict';
 
-	function DetailPageHandler(targetDOM, fileName) {
-		this.target = targetDOM;
+	function DetailPageHandler(inputContainer, inputTab, fileName, inputData) {
+		this.container = inputContainer;
+		this.tab = inputTab;
 		this.testFileName = fileName;
-		this.container = new DataContainer($(targetDOM).find("table.tb_header"));
+		this.data = inputData;
+		this.dataContainer = new DataContainer($(inputContainer).find("table.tb_header"));
+
+		$.each(this.data, function (index, value) {
+			delete value.name;
+		});
+
+		this.dataContainer.appendData(this.data);
+		//button.addButtonFeedbackAction(inputContainer + " button");
+		//button.addButtonFeedbackAction(inputContainer + " th.tb_header");
 	}
 
 	DetailPageHandler.prototype = {
-		drawChart: function (data) {
+		drawChart: function () {
 			var tempDates = [],
 				tempErrorCounts = [],
 				i,
-				max = data.length;
+				max = this.data.length;
 
 			for (i = 0; i < max; i += 1) {
-				tempDates.push(data[i].date);
-				tempErrorCounts.push(data[i].error);
+				tempDates.push(this.data[i].date);
+				tempErrorCounts.push(this.data[i].error);
 			}
 
-			chartTool.drawChart($(this.target).find("canvas.chart_table"), {
+			chartTool.drawChart($(this.container).find("canvas.chart_table"), {
 				dates : tempDates,
 				errorCounts : tempErrorCounts
 			});
+		},
 
-			//Temp codes for testing.
-			$.each(data, function (index, value) {
-				delete value.name;
-			});
-			this.container.appendData(data);
+		getContainer: function () {
+			return this.dataContainer;
 		}
 	}
 

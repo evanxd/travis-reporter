@@ -26,7 +26,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 				$(this).removeClass('bt_pressed');
 			}
 		);
-	};
+	}
 
 	/**
 	 * Add actions to target button when the mouse press on it.
@@ -38,7 +38,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			$(this).removeClass('bt_hover');
 			$(this).addClass('bt_pressed');
 		});
-	};
+	}
 
 	/**
 	 * Add actions to target button when the mouse pressed, and then releases on it.
@@ -50,7 +50,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			$(this).removeClass('bt_pressed');
 			$(this).addClass('bt_hover');
 		});
-	};
+	}
 
 	/**
 	 * Add actions to target button when the mouse presses between it.
@@ -74,7 +74,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 				}
 			}
 		);
-	};
+	}
 
 	/**
 	 * Add actions to target button when the mouse pressed on the target.
@@ -89,7 +89,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 				$(this).addClass('bt_pressed');
 			}
 		});
-	};
+	}
 
 	// Here starts definding the singleton object.
 	(function () {
@@ -206,7 +206,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			 * @param {Object} targetController The test file bar controller.
 			 * @param {Function} callback The callback function to be executed.
 			 */
-			detailButtonAction: function (fileName, targetTabContainer, targetContainer, targetController, callback) {
+			detailButtonAction: function (fileName, targetTabContainer, targetContainer, targetController, callback, callback2) {
 				var $tab = $('<span>'),
 					$content = $('<p>'),
 					count = $(targetTabContainer).children().last().children().attr('id'),
@@ -247,7 +247,12 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 
 					queryTool.resetOptions();
 					queryTool.setOptions("name", fileName);
-					detailPageHandlers.push(new DetailPageHandler($detail, fileName).drawChart(queryTool.query()));
+					detailPageHandlers.push(new DetailPageHandler($detail, $tab, fileName, queryTool.query()));
+					
+					detailPageHandlers[detailPageHandlers.length - 1].drawChart();
+					$("div#display" + count).find("th.tb_header").click(function() {
+						callback2($(this), detailPageHandlers[detailPageHandlers.length - 1].getContainer());
+					});
 				});
 			},
 
