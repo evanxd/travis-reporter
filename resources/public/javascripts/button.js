@@ -147,6 +147,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			homePageButtonAction: function (targetController) {
 				queryTool.resetOptions();
 				$("select").val("null");
+				$("select[name='count']").val(10);
 				queryTool.setOptions("count", 10);
 				targetController.clear();
 				targetController.appendData(queryTool.query());
