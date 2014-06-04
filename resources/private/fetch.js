@@ -72,7 +72,6 @@ function doLog(LOG_ID,time,build,job){
   }, function(err,res){
     var result = parser.findErrFile(res.log.body);
     if(result!=null){
-      result = jsonSort(result);
       doJson(result,time,build,job);
     }
   });
@@ -80,48 +79,20 @@ function doLog(LOG_ID,time,build,job){
 
 
 function doJson(errfile,time,build,job){
-  var errName=errfile.Name[0],errPath=errfile.Path[0],counts=0;
   var length = errfile.length;
-  for(i=0;i<=length;i++){
-    if(errName!=errfile.Name[i]){
-      var result = {
-        "buildID" : build,
-        "jobID" : job,
-        "date" : time, 
-        "fileName" : errName,
-        "filePath" : errPath,
-        "errCount" : counts
-      }
-      outJson(result);
-      errName=errfile.Name[i];
-      errPath=errfile.Path[i];
-      counts=1;
+  for(i=0;i<length;i++){
+    var errPath = errfile[i];
+    var result = {
+      "buildID" : build,
+      "jobID" : job,
+      "filePath" : errPath,
+      "date" : time
     }
-    else{
-      counts++;
-    }
+    outJson(result);
   }
 }
 
 //send out the result json to the database
 function outJson(result){
-  update.update(result);
-}
-
-function jsonSort(json){
-  var temp;
-  var length = json.length;
-  for (var x=length; x>1; x--){
-    for (var y=0;y<x-1;y++){
-      if(json.Name[y]>json.Name[y+1]){
-        temp = json.Name[y];
-        json.Name[y] = json.Name[y+1];
-        json.Name[y+1] = temp;
-        temp = json.Path[y];
-        json.Path[y] = json.Path[y+1];
-        json.Path[y+1] = temp;
-      }
-    }
-  }
-  return json;
+  update.insertData(result);
 }
