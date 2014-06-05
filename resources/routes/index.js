@@ -6,9 +6,14 @@ router.get('/', function(req, res) {
   res.render('index');
 });
 
-/* GET detail page. */
+/* GET detail DIV. */
 router.get('/detail', function(req, res) {
 	res.render('detail');
+});
+
+/* GET selfDefine DIV */
+router.get('/selfDefine', function(req, res) {
+	res.render('selfDefine');
 });
 
 module.exports = router;

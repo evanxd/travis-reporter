@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/detail', routes);
+app.use('/selfDefine', routes);
 app.use('/users', users);
 app.use('/data', searchs);
 

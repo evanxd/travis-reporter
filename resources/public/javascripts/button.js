@@ -91,6 +91,55 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 		});
 	}
 
+	/**
+	 * Lock the screen by covering all HTML element by a div except for body element.
+	 */
+	function lockScreen() {
+		var $lockScreenDiv = $("<div>");
+
+		$lockScreenDiv.attr("id", "lockScreen");
+		$(document.body).append($lockScreenDiv);
+	}
+
+	/**
+	 * Unlock the screen by removing the div element on the top.
+	 */
+	function unlockScreen() {
+		$("#lockScreen").detach();
+	}
+
+	/**
+	 * Produce a self defining page.
+	 * @param {String} name The option user want to set.
+	 * @returns {DOM} The self defining page gotten from server.
+	 */
+	function produceSelfDefinePage(name) {
+		var bodyTag = $(document.body),
+			selfDefinePage = null,
+			inputBar = null;
+
+		$.ajax({
+			url: "/selfDefine",
+			type: "get",
+			async: false
+		}).done(function (data) {
+			selfDefinePage = $(data);
+		});
+
+		selfDefinePage.find(".header").append(name + " defining");
+
+		bodyTag.append(selfDefinePage);
+
+		return selfDefinePage;
+	}
+
+	/**
+	 * Delete the self defining page on the top.
+	 */
+	function deleteSelfDefinePage() {
+		$("#selfDefine").detach();
+	}
+
 	// Here starts definding the singleton object.
 	(function () {
 		var instance;
@@ -202,10 +251,37 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			 * @param {Object} targetController The object handling the data to be shown.
 			 */
 			searchToolButtonAction: function (name, value, targetController) {
-				queryTool.setOptions(name, value);
-				targetController.clear();
-				targetController.appendData(queryTool.query());
-				instance.addButtonFeedbackAction($("button.bt_detail"));
+				var selfDefinePage = null;
+				if(value === "selfDefine") {
+					// Enter self defining option mode.
+					lockScreen();
+					selfDefinePage = produceSelfDefinePage(name);
+					instance.addButtonFeedbackAction(selfDefinePage.find("button"));
+
+					// Pop out the self defining page.
+					selfDefinePage.slideToggle();
+
+					// Add action to button on self defining page.
+					selfDefinePage.find("button").click(function (e, callback) {
+						var inputValue = selfDefinePage.find("input").attr("value");
+						
+						if(inputValue !== "") {
+							// Call myself (search the data).
+							instance.searchToolButtonAction(name, inputValue, targetController);
+						}
+						
+						// Hide self defining page and delete it.
+						selfDefinePage.slideToggle(deleteSelfDefinePage);
+
+						unlockScreen();
+					});
+				}
+				else {
+					queryTool.setOptions(name, value);
+					targetController.clear();
+					targetController.appendData(queryTool.query());
+					instance.addButtonFeedbackAction($("button.bt_detail"));
+				}
 			},
 
 			/**
