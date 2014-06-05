@@ -15,7 +15,7 @@ define(function () {
 	 */
 		optionMatcher = {
 			"id": "_id",
-			"filePath": "filePath",
+			"name": "filePath",
 			"date": "date",
 			"error": "errCount",
 			"count": "count"
