@@ -340,7 +340,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 					instance.addButtonFeedbackAction($('div#display' + count).find('button, th.tb_header'));
 
 					queryTool.resetOptions();
-					queryTool.setOptions("filePath", fileName);
+					queryTool.setOptions("name", fileName);
 					detailPageHandlers.push(new DetailPageHandler($detail, $tab, fileName, queryTool.query()));
 					
 					detailPageHandlers[detailPageHandlers.length - 1].drawChart();
