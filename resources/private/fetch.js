@@ -1,5 +1,6 @@
 var parser = require('./parser.js');
 var Travis = require('travis-ci');
+var request = require("request");
 var update = require('./updateBase.js');
 var travis = new Travis({
   version: '2.0.0'
@@ -57,26 +58,26 @@ function doJob(JOB_ID,time,build){
     id: JOB_ID
   }, function(err, res){
     if(err==null){
-      var LOG_ID = res.job.log_id;
       var action = res.job.config.env;
       if(action=="CI_ACTION=marionette_js"){
-        doLog(LOG_ID,time,build,JOB_ID);
+        doLog(time,build,JOB_ID);
       }
     }
   });
 }
 
-function doLog(LOG_ID,time,build,job){
-  travis.logs({
-    id :LOG_ID
-  }, function(err,res){
+function doLog(time,build,job){
+  var url ="https://s3.amazonaws.com/archive.travis-ci.org/jobs/"+job+"/log.txt";
+  request({
+    uri:url
+  },function(err,response,body){
     if(err==null){
-      var result = parser.findErrFile(res.log.body);
+      var result = parser.findErrFile(body);
       if(result!=null){
-       doJson(result,time,build,job);
+        doJson(result,time,build,job);
       }
     }
-  });
+  })
 }
 
 
@@ -90,6 +91,7 @@ function doJson(errfile,time,build,job){
       "filePath" : errPath,
       "date" : time
     }
+    console.log(result);
     outJson(result);
   }
 }
