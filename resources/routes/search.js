@@ -17,6 +17,7 @@ router.get('/',function(req, res) {
 });
 router.get('/detail',function(req, res) {
 	var result = repoter.find({filePath:req.query.filePath});
+	result.sort('-date');
 	result.exec(function(err,result){	
 		res.send(result);
 	});
