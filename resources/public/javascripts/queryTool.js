@@ -18,7 +18,9 @@ define(function () {
 			"name": "filePath",
 			"date": "date",
 			"error": "errCount",
-			"count": "count"
+			"count": "count",
+			"build": "buildID",
+			"job": "jobID"
 		};
 
 	/**
@@ -79,10 +81,38 @@ define(function () {
 
 					for (i = 0; i < length; i += 1) {
 						result[i] = [];
-						result[i].id = data[i][optionMatcher.id];
 						result[i].name = data[i][optionMatcher.name];
 						result[i].date = data[i][optionMatcher.date];
 						result[i].error = data[i][optionMatcher.error];
+					}
+				}
+			});
+
+			return result;
+		},
+
+		queryDetail: function () {
+			var result = [],
+				option = {};
+
+			if(options.length !== 0) {
+				option = options;
+			}
+
+			$.ajax({
+				url: "/data/detail",
+				type: "GET",
+				data: option,
+				async: false,
+				success: function (data) {
+					var length = data.length,
+						i = 0;
+
+					for (i = 0; i < length; i += 1) {
+						result[i] = [];
+						result[i].job = data[i][optionMatcher.job];
+						result[i].date = data[i][optionMatcher.date];
+
 					}
 				}
 			});
