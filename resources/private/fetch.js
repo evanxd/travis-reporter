@@ -22,7 +22,7 @@ function doRepo(time,callback){
   owner_name: owner,
   name: reponame
   }, function (err, res) {
-    if(res.builds!=null){
+    if(err==null){
       var BUILD_IDS = res.builds;
       for(i in BUILD_IDS){
         var finishTime = BUILD_IDS[i].finished_at;
@@ -42,7 +42,7 @@ function doBuild(BUILD_ID){
   travis.builds({
     id: BUILD_ID
   }, function(err, res){
-    if(res.build!=null){
+    if(err==null){
       for(var i in res.build.job_ids){
         var JOB_ID = res.build.job_ids[i];
         var time = res.build.finished_at.slice(0,10);
@@ -56,7 +56,7 @@ function doJob(JOB_ID,time,build){
   travis.jobs({
     id: JOB_ID
   }, function(err, res){
-    if(res.job!=null){
+    if(err==null){
       var LOG_ID = res.job.log_id;
       var action = res.job.config.env;
       if(action=="CI_ACTION=marionette_js"){
@@ -70,9 +70,11 @@ function doLog(LOG_ID,time,build,job){
   travis.logs({
     id :LOG_ID
   }, function(err,res){
-    var result = parser.findErrFile(res.log.body);
-    if(result!=null){
-      doJson(result,time,build,job);
+    if(err==null){
+      var result = parser.findErrFile(res.log.body);
+      if(result!=null){
+       doJson(result,time,build,job);
+      }
     }
   });
 }
