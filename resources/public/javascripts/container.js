@@ -49,7 +49,7 @@ define(["dataBar"], function (DataBar) {
 		 * Append data to Travis-reporter as a bar.
 		 * @param {JSON} data The data to be appended to target DOM.
 		 */
-		appendData: function (data) {			
+		appendData: function (data) {
 			var i,
 				max = data.length,
 				$bar = null,
@@ -84,7 +84,7 @@ define(["dataBar"], function (DataBar) {
 
 				$(this.target).append($bar);
 	
-				this.dataBars.push(new DataBar($("#info_bar_no" + this.dataCounter)));
+				this.dataBars.push(new DataBar($bar));
 
 				this.dataCounter += 1;
 			}
@@ -142,7 +142,7 @@ define(["dataBar"], function (DataBar) {
 
 			// Actions after sorting.
 			// Clear data in target container.
-			$('.tb_info_bar').detach();
+			$(this.target).find('.tb_info_bar').detach();
 
 			// Then add sorted data on to target container.
 			max = this.dataBars.length;

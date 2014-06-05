@@ -341,7 +341,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 
 					queryTool.resetOptions();
 					queryTool.setOptions("name", fileName);
-					detailPageHandlers.push(new DetailPageHandler($detail, $tab, fileName, queryTool.query()));
+					detailPageHandlers.push(new DetailPageHandler($detail, $tab, fileName, queryTool.queryDetail()));
 					
 					detailPageHandlers[detailPageHandlers.length - 1].drawChart();
 					$("div#display" + count).find("th.tb_header").click(function() {

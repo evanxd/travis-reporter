@@ -8,11 +8,6 @@ define(['chartTool', 'container'], function (chartTool, DataContainer) {
 		this.data = inputData;
 		this.dataContainer = new DataContainer($(inputContainer).find("table.tb_header"));
 
-		// Warning==========================================
-		$.each(this.data, function (index, value) {
-			delete value.name;
-		});
-
 		this.dataContainer.appendData(this.data);
 	}
 
