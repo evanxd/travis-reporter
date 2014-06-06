@@ -334,22 +334,32 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 					url: '/detail',
 					type: 'get'
 				}).done(function(data) {
+					//Generate detail page.
 					var $detail = $('<div>');
-					
 					$detail.attr('id', 'display' + count);
 					$detail.attr('class', 'display');
-
 					$detail.append(data);
+
+					// Hide all pages at information area.
 					$(informationArea).children('div.display').hide();
 					$(informationArea).append($detail);
-				
-					instance.addButtonFeedbackAction($('div#display' + count).find('button, th.tb_header'));
 
+					// Query all data which detail page needs.
 					queryTool.resetOptions();
 					queryTool.setOptions("name", fileName);
+
+					// Generate new detail page handler.
 					detailPageHandlers.push(new DetailPageHandler($detail, $tab, fileName, queryTool.queryDetail()));
 					
+					// Binding feedback actions.
+					instance.addButtonFeedbackAction($('div#display' + count).find('button, th.tb_header'));
+					$('div#display' + count).find('.bt_link').click(function () {
+						instance.linkButtonAction($(this));
+					});
+
 					detailPageHandlers[detailPageHandlers.length - 1].drawChart();
+
+					// Bind actions when "link button" inside detail page clicked.
 					$("div#display" + count).find("th.tb_header").click(function() {
 						instance.headerButtonAction($(this), detailPageHandlers[detailPageHandlers.length - 1].getController());
 					});
@@ -374,6 +384,20 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 
 				// Show the corresponding information area to the clicked tab.
 				$('div#display' + count).show();
+			},
+
+			/**
+			 * The corresponding function of the clicked link button.
+			 * This function will open a new tab and link to Travis CI
+			 * log file which corresponds to the JobID in a data bar which
+			 * contains the clicked button element.
+			 * @param {DOM} clickedButton The clicked "link button" element.
+			 */
+			linkButtonAction: function (clickedButton) {
+				var jobID = clickedButton.parent().parent().children('.job').text(),
+					baseURL = "https://travis-ci.org/mozilla-b2g/gaia/jobs/";
+
+				window.open(baseURL + jobID);
 			}
 		};
 	}());
