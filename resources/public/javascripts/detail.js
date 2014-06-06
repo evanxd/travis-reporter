@@ -22,6 +22,7 @@ define(['chartTool', 'dataController'], function (chartTool, DataController) {
 		this.testFileName = fileName;
 		this.data = inputData;
 		this.dataController = new DataController(testBarContainer.find("table.tb_header"));
+		this.dataController.setButtonType(this.dataController.linkButton);
 
 		this.dataController.appendData(this.data);
 	}

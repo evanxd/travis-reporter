@@ -2,11 +2,12 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 	'use strict';
 
 	// Variable initialization.
-	var test_container = new DataController($("table.tb_header")),
+	var dataController = new DataController($("table.tb_header")),
 		button = new Button();
 
-	button.homePageButtonAction(test_container);
-	test_container.sort('error');
+	dataController.setButtonType(dataController.detailButton);
+	button.homePageButtonAction(dataController);
+	dataController.sort('error');
 
 	// Button action binding.
 	// Binding feedback actions.
@@ -18,7 +19,7 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 
 	// Binding searching action to search tools (pull-down menus).
 	$('select').change(function () {
-		button.searchToolButtonAction($(this).attr('name'), $(this).val(), test_container);
+		button.searchToolButtonAction($(this).attr('name'), $(this).val(), dataController);
 		$('button.bt_detail').click(function () {
 			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
 		});
@@ -26,7 +27,7 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 	
 	// Binding searching action to search button.
 	$('button#bt_search').click(function () {
-		button.searchToolButtonAction("name", $("input#search").attr("value"), test_container);
+		button.searchToolButtonAction("name", $("input#search").attr("value"), dataController);
 		$('button.bt_detail').click(function () {
 			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
 		});
@@ -34,12 +35,12 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 
 	// Binding sorting action to the headers of data bars.
 	$('th.tb_header').click(function () {
-		button.headerButtonAction($(this), test_container);
+		button.headerButtonAction($(this), dataController);
 	});
 
 	// Binding home page action to home page button.
 	$('#title').click(function () {
-		button.homePageButtonAction(test_container);
+		button.homePageButtonAction(dataController);
 		button.addButtonFeedbackAction($("button.bt_detail"));
 		$('button.bt_detail').click(function () {
 			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
@@ -48,9 +49,9 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 
 	// Binding tab action to tabs to switch between information pages.
 	$('p.tab').click(function () {
-		button.tabButtonAction($(this), test_container);
+		button.tabButtonAction($(this), dataController);
 		if($(this).attr('id') === 'display0') {
-			button.homePageButtonAction(test_container);
+			button.homePageButtonAction(dataController);
 			button.addButtonFeedbackAction($("button.bt_detail"));
 			$('button.bt_detail').click(function () {
 				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));

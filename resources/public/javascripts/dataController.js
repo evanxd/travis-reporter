@@ -39,7 +39,15 @@ define(["dataBar"], function (DataBar) {
 			"type": large_to_small,
 			"option": null
 		};
-	};
+
+		/**
+		 * The button type of each data bar, null for no button.
+		 */
+		this.buttonType = null;
+
+		this.detailButton = true;
+		this.linkButton = false;
+	}
 
 	/**
 	 * @public The following functions and variables are public.
@@ -62,10 +70,18 @@ define(["dataBar"], function (DataBar) {
 				$bar.attr("id", "info_bar_no" + this.dataCounter);
 				$bar.attr("class", "tb_info_bar");
 
-				$btDetail = $("<button>");
-				$btDetail.attr("id", "bt_detail_no" + this.dataCounter);
-				$btDetail.attr("class", "bt_detail bt");
-				$btDetail.append("Detail");
+				if(this.buttonType !== null) {
+					$btDetail = $("<button>");
+					if(this.buttonType === this.detailButton) {
+						$btDetail.attr("class", "bt_detail bt");
+						$btDetail.append("Detail");
+					}
+					else {
+						$btDetail.attr("class", "bt_link bt");
+						$btDetail.append("Link");
+					}
+				}
+				
 
 				for (key in data[i]) {
 					if(key !== 'id') {
@@ -238,6 +254,15 @@ define(["dataBar"], function (DataBar) {
 			$('.tb_info_bar').detach();
 			this.dataBars = [];
 			this.dataCounter = 0;
+		},
+
+		/**
+		 * Set the type of buttons on each data bar.
+		 * @param {Boolean} btType The type to be set. True for detail button,
+		 * false for link button, null for no button.
+		 */
+		setButtonType: function (btType) {
+			this.buttonType = btType;
 		}
 	};
 
