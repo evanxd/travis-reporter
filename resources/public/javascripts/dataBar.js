@@ -42,7 +42,7 @@ define(function () {
 		 * @returns {DOM} The whole data bar DOM object.
 		 */
 		get: function () {
-			return $(this.targetDOM);
+			return this.targetDOM;
 		}
 	};
 

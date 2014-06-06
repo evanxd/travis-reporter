@@ -1,17 +1,39 @@
-define(['chartTool', 'container'], function (chartTool, DataContainer) {
+/**
+ * This Javascript file returns "DetailPageHandler" as a class.
+ * This class provides API to perform manipulation of detail pages
+ * such as appending, detaching, sorting test file bars and drawing
+ * charts on detail page.
+ */
+define(['chartTool', 'dataController'], function (chartTool, DataController) {
 	'use strict';
 
-	function DetailPageHandler(inputContainer, inputTab, fileName, inputData) {
-		this.container = inputContainer;
+	/**
+	 * @class DetailPageHandler
+	 * @constructor
+	 * @param {DOM} testBarContainer The DOM element which conatains test bars.
+	 * @param {DOM} inputTab The DOM element as a tab which is associated with
+	 * this detail page.
+	 * @param {String} fileName The name of clicked test file.
+	 * @param {Array} inputData All data this detail page handles.
+	 */
+	function DetailPageHandler(testBarContainer, inputTab, fileName, inputData) {
+		this.container = testBarContainer;
 		this.tab = inputTab;
 		this.testFileName = fileName;
 		this.data = inputData;
-		this.dataContainer = new DataContainer($(inputContainer).find("table.tb_header"));
+		this.dataController = new DataController(testBarContainer.find("table.tb_header"));
 
-		this.dataContainer.appendData(this.data);
+		this.dataController.appendData(this.data);
 	}
 
+	/**
+	 * Public methods and variables.
+	 */
 	DetailPageHandler.prototype = {
+		/**
+		 * Draw chart on canvas belongs to this detail page. The content of
+		 * chart is about the history of test file this detail page handles. 
+		 */
 		drawChart: function () {
 			var tempDates = [],
 				tempErrorCounts = [],
@@ -29,10 +51,13 @@ define(['chartTool', 'container'], function (chartTool, DataContainer) {
 			});
 		},
 
-		getContainer: function () {
-			return this.dataContainer;
+		/**
+		 * Get the test data controller belongs to it.
+		 */
+		getController: function () {
+			return this.dataController;
 		}
-	}
+	};
 
 	return DetailPageHandler;
 });
