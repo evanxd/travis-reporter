@@ -17,7 +17,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 	 * @param {DOM} target The target DOM object to be bound to this feedback action.
 	 */
 	function hoverFeedback(target) {
-		$(target).hover(
+		target.hover(
 			function() {
 				$(this).addClass('bt_hover');
 			},
@@ -34,7 +34,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 	 * @param {DOM} target The target DOM object to be bound to this feedback action.
 	 */
 	function pressFeedback(target) {
-		$(target).mousedown(function() {
+		target.mousedown(function() {
 			$(this).removeClass('bt_hover');
 			$(this).addClass('bt_pressed');
 		});
@@ -46,7 +46,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 	 * @param {DOM} target The target DOM object to be bound to this feedback action.
 	 */
 	function releaseFeedback(target) {
-		$(target).mouseup(function() {
+		target.mouseup(function() {
 			$(this).removeClass('bt_pressed');
 			$(this).addClass('bt_hover');
 		});
@@ -60,7 +60,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 	 * @param {DOM} target The target DOM object to be bound to this feedback action.
 	 */
 	function toggleHoverFeedback(target) {
-		$(target).hover(
+		target.hover(
 			function() {
 				var classAttr = $(this).attr('class');
 				if(classAttr.indexOf('.bt_pressed') === -1) {
@@ -83,7 +83,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 	 * @param {DOM} target The target DOM object to be bound to this feedback action.
 	 */
 	function togglePressedFeedback(target) {
-		$(target).mousedown(function() {
+		target.mousedown(function() {
 			if($(this).attr('class') !== '.bt_pressed') {
 				$(this.tagName.toLowerCase() + '.bt_pressed').removeClass('bt_pressed');
 				$(this).addClass('bt_pressed');
@@ -99,13 +99,20 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 
 		$lockScreenDiv.attr("id", "lockScreen");
 		$(document.body).append($lockScreenDiv);
+		$lockScreenDiv.fadeIn();
 	}
 
 	/**
 	 * Unlock the screen by removing the div element on the top.
 	 */
 	function unlockScreen() {
-		$("#lockScreen").detach();
+		var del = function () {
+			$("#lockScreen").detach();
+		};
+
+		$("#lockScreen").fadeOut(del);
+
+		del = null;
 	}
 
 	/**
@@ -115,8 +122,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 	 */
 	function produceSelfDefinePage(name) {
 		var bodyTag = $(document.body),
-			selfDefinePage = null,
-			inputBar = null;
+			selfDefinePage = null;
 
 		$.ajax({
 			url: "/selfDefine",
@@ -224,28 +230,28 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			 * @param {Object} targetController The object handling the data to be shown.
 			 */
 			headerButtonAction: function (clickedDOM, targetController) {
-				var pressedColumn = $(clickedDOM).attr("axis"),
+				var pressedColumn = clickedDOM.attr("axis"),
 					sortingType = null,
 					arrowToShown = null;
 				
 				sortingType = targetController.sort(pressedColumn);
 
 				if(sortingType === true) { // Large to small.
-					arrowToShown = $(clickedDOM).children(".down");
+					arrowToShown = clickedDOM.children(".down");
 				}
 				else {
-					arrowToShown = $(clickedDOM).children(".up");
+					arrowToShown = clickedDOM.children(".up");
 				}
 
 				// Hide shown arrow on header.
 				$(".img_sort").hide();
 
 				// Display the appropriate arrow in header.
-				$(arrowToShown).slideToggle("fast");
+				arrowToShown.slideToggle("fast");
 			},
 
 			/**
-			 * The corresponding function of the changed pull-down menus: Ask targetContainer
+			 * The corresponding function of the changed pull-down menus: Ask targetController
 			 * to sort data by the property of the changed pull-down menu.
 			 * @param {DOM} clickedDOM The clicked pull-down menu element.
 			 * @param {Object} targetController The object handling the data to be shown.
@@ -259,10 +265,10 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 					instance.addButtonFeedbackAction(selfDefinePage.find("button"));
 
 					// Pop out the self defining page.
-					selfDefinePage.slideToggle();
+					selfDefinePage.slideDown();
 
 					// Add action to button on self defining page.
-					selfDefinePage.find("button").click(function (e, callback) {
+					selfDefinePage.find("button").click(function () {
 						var inputValue = selfDefinePage.find("input").attr("value");
 						
 						if(inputValue !== "") {
@@ -271,7 +277,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 						}
 						
 						// Hide self defining page and delete it.
-						selfDefinePage.slideToggle(deleteSelfDefinePage);
+						selfDefinePage.slideUp(deleteSelfDefinePage);
 
 						unlockScreen();
 					});
@@ -297,7 +303,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			detailButtonAction: function (fileName, tabBar, informationArea) {
 				var $tab = $('<span>'),
 					$content = $('<p>'),
-					count = $(tabBar).children().last().children().attr('id');
+					count = tabBar.children().last().children().attr('id');
 				
 				// Retrieve the number of the id of ckicked tab.
 				// Example: tab1 -> 1.
@@ -318,11 +324,11 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 
 				// Bind the new tab to appropriate function when clicked.
 				$content.click(function() {
-					instance.tabButtonAction(this);
+					instance.tabButtonAction($(this));
 				});
 
 				// Add this new tab to tab bar.
-				$(tabBar).append($tab);
+				tabBar.append($tab);
 			
 				$.ajax({
 					url: '/detail',
@@ -345,7 +351,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 					
 					detailPageHandlers[detailPageHandlers.length - 1].drawChart();
 					$("div#display" + count).find("th.tb_header").click(function() {
-						instance.headerButtonAction(this, detailPageHandlers[detailPageHandlers.length - 1].getContainer());
+						instance.headerButtonAction($(this), detailPageHandlers[detailPageHandlers.length - 1].getController());
 					});
 				});
 			},
@@ -360,7 +366,7 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 				// Hide all unhided display area.
 				$('div.display').not(":hidden").hide();
 
-				var count = $(cliekedTab).attr('id');
+				var count = cliekedTab.attr('id');
 
 				// Retrieve the number of the id of ckicked tab.
 				// Example: tab1 -> 1.

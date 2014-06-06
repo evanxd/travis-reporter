@@ -1,5 +1,5 @@
 /**
- * This Javascript file returns "Container" as a class.
+ * This Javascript file returns "DataController" as a class.
  * This class provides API to perform manipulation of test file bars
  * such as appending, detaching, and sorting test file bars on Travis-reporter.
  */
@@ -12,11 +12,11 @@ define(["dataBar"], function (DataBar) {
 	var large_to_small = true;
 
 	/**
-	 * @class Container
+	 * @class DataController
 	 * @constructor
 	 * @param {DOM} target The target DOM which the test bar to be appended to.
 	 */
-	function Container (inputTarget) {
+	function DataController (inputTarget) {
 		/**
 		 * The target DOM object to be manipulated, the manipulations includes
 		 * appending and showing data, sorting data, and removing data from it.
@@ -44,7 +44,7 @@ define(["dataBar"], function (DataBar) {
 	/**
 	 * @public The following functions and variables are public.
 	 */
-	Container.prototype = {		
+	DataController.prototype = {		
 		/**
 		 * Append data to Travis-reporter as a bar.
 		 * @param {JSON} data The data to be appended to target DOM.
@@ -119,7 +119,7 @@ define(["dataBar"], function (DataBar) {
 			var i, max;
 
 			if (option === undefined && this.sortConfigure.option === undefined) {
-				console.log('container.js function sort() error.');
+				console.log('dataController.js function sort() error.');
 			}
 			else {
 				// Configuring the sorting type and option.
@@ -141,7 +141,7 @@ define(["dataBar"], function (DataBar) {
 			}
 
 			// Actions after sorting.
-			// Clear data in target container.
+			// Clear data in target dataController.
 			$(this.target).find('.tb_info_bar').detach();
 
 			// Then add sorted data on to target container.
@@ -241,5 +241,5 @@ define(["dataBar"], function (DataBar) {
 		}
 	};
 
-	return Container;
+	return DataController;
 });

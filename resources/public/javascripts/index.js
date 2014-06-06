@@ -1,8 +1,8 @@
-$(document).ready(require(['button', 'container'], function (Button, DataContainer) {
+$(document).ready(require(['button', 'dataController'], function (Button, DataController) {
 	'use strict';
 
 	// Variable initialization.
-	var test_container = new DataContainer($("table.tb_header")),
+	var test_container = new DataController($("table.tb_header")),
 		button = new Button();
 
 	button.homePageButtonAction(test_container);
@@ -10,8 +10,8 @@ $(document).ready(require(['button', 'container'], function (Button, DataContain
 
 	// Button action binding.
 	// Binding feedback actions.
-	button.addButtonFeedbackAction('button, th.tb_header, #title');
-	button.addToggleFeedbackAction('.tab');
+	button.addButtonFeedbackAction($('button, th.tb_header, #title'));
+	button.addToggleFeedbackAction($('.tab'));
 
 	// Initializes home page tab to pressed.
 	$("#tab0").addClass('bt_pressed');
@@ -46,6 +46,7 @@ $(document).ready(require(['button', 'container'], function (Button, DataContain
 		});
 	});
 
+	// Binding tab action to tabs to switch between information pages.
 	$('p.tab').click(function () {
 		button.tabButtonAction($(this), test_container);
 		if($(this).attr('id') === 'display0') {
@@ -57,6 +58,8 @@ $(document).ready(require(['button', 'container'], function (Button, DataContain
 		}
 	});
 
+	/* Binding detail action to detail button to generate new tabs and
+	information areas. */
 	$('button.bt_detail').click(function() {
 		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
 	});

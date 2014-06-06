@@ -27,14 +27,12 @@ table {
 	overflow: scroll;
 	word-break: break-all;
 	white-space: nowrap;
+
 }
 
-table, tr, td {
-	padding-left: 0.2em;
-	padding-right: 0.2em;
-	padding-top: 0em;
-	padding-bottom: 0em;
-	margin: 0em;
+td {
+	padding-left: 0.5em;
+    padding-right: 0.5em;
 	vertical-align: middle;
 	text-align: left;
 }
@@ -168,6 +166,7 @@ th.tb_header img {
 
 #lockScreen {
     position: absolute;
+    display: none;
     top: 0em;
     left: 0em;
     width: 100%;
@@ -180,13 +179,11 @@ th.tb_header img {
 #selfDefine {
     position: absolute;
     display: none;
+    padding: 0.2em;
     top: 20%;
     left: 50%;
-    bottom: 0em;
     width: 20em;
-    height: 8em;
     margin-left: -10em;
-    padding: 0em;
     background-color: #EAEAE7;
 }
 

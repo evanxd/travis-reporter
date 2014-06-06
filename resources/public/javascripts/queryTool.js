@@ -6,11 +6,13 @@ define(function () {
 	 */
 
 	/**
+	 * @private
 	 * The querying options.
 	 */
 	var options = {},
 
 	/**
+	 * @private
 	 * A JSON object to match options between this tool and back-end tool.
 	 */
 		optionMatcher = {
@@ -22,6 +24,27 @@ define(function () {
 			"build": "buildID",
 			"job": "jobID"
 		};
+
+	/**
+	 * @private
+	 * Send request to restfulAPI.
+	 * @param {String} reqUrl The target URL pointing to appropriate restfulAPI.
+	 * @returns {JSON} The response from restfulAPI.
+	 */
+	function request(reqUrl) {
+		var response = null;
+
+		$.ajax({
+			url: reqUrl,
+			type: "GET",
+			data: options,
+			async: false
+		}).done(function (data) {
+			response = data;
+		});
+
+		return response;
+	}
 
 	/**
 	 * @public The following functions and variables are public.
@@ -56,66 +79,59 @@ define(function () {
 
 		/**
 		 * Querying data through restful API from back-end server with some options.
+		 * This fucntion is used for home page purpose.
 		 *
 		 * @returns {JSON} A JSON contains the result from restful API.
 		 */
 		query: function () {
-			var result = [],
-				option;
+			var data = null,
+				result = [],
+				length = 0,
+				i;
 
-			if(options.length !== 0) {
-				option = options;
+			if(options.length === 0) {
+				options = {};
 			}
-			else {
-				option = {};
+
+			data = request("/data");
+
+			length = data.length;
+
+			for (i = 0; i < length; i += 1) {
+				result[i] = [];
+				result[i].name = data[i][optionMatcher.name];
+				result[i].date = data[i][optionMatcher.date];
+				result[i].error = data[i][optionMatcher.error];
 			}
-
-			$.ajax({
-				url: "/data",
-				type: "GET",
-				data: option,
-				async: false,
-				success: function (data) {
-					var length = data.length,
-						i = 0;
-
-					for (i = 0; i < length; i += 1) {
-						result[i] = [];
-						result[i].name = data[i][optionMatcher.name];
-						result[i].date = data[i][optionMatcher.date];
-						result[i].error = data[i][optionMatcher.error];
-					}
-				}
-			});
 
 			return result;
 		},
 
+		/**
+		 * Querying data through restful API from back-end server with some options.
+		 * This fucntion is used for detail page purpose.
+		 *
+		 * @returns {JSON} A JSON contains the result from restful API.
+		 */
 		queryDetail: function () {
-			var result = [],
-				option = {};
+			var data = null,
+				result = [],
+				length = 0,
+				i;
 
-			if(options.length !== 0) {
-				option = options;
+			if(options.length === 0) {
+				options = {};
 			}
 
-			$.ajax({
-				url: "/data/detail",
-				type: "GET",
-				data: option,
-				async: false,
-				success: function (data) {
-					var length = data.length,
-						i = 0;
+			data = request("/data/detail");
 
-					for (i = 0; i < length; i += 1) {
-						result[i] = [];
-						result[i].job = data[i][optionMatcher.job];
-						result[i].date = data[i][optionMatcher.date];
+			length = data.length;
 
-					}
-				}
-			});
+			for (i = 0; i < length; i += 1) {
+				result[i] = [];
+				result[i].job = data[i][optionMatcher.job];
+				result[i].date = data[i][optionMatcher.date];
+			}
 
 			return result;
 		}
