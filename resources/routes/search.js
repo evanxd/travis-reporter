@@ -125,7 +125,7 @@ function dateRange(json,date)
 	{
 		console.log("\n");
 		var temp=json[x];
-		if(temp.date>range)
+		if(temp.date>=range)
 		{
 			//console.dir(temp);
 			//console.log("\n");
@@ -159,7 +159,7 @@ function errCountRange(json,errCount)
 	{
 		//console.log("\n");
 		var temp=json[x];
-		if(temp.errCount>errCount)
+		if(temp.errCount>=errCount)
 		{
 			//console.dir(temp);
 			//console.log("\n");
