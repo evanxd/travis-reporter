@@ -7,59 +7,94 @@ var travis = new Travis({
 });
 var owner = 'mozilla-b2g',
   reponame = 'gaia';
+var timeTemp;
+var IDsTemp,count;
+var oldTemp=null;
 module.exports ={
-    doThing : function(time,callback){
+    doThing : function(time,IDs,callback){ 
+    IDsTemp={},count=0;
     var newTime=time;
-      doRepo(time,function(timeEnd){
-        newTime=timeEnd;
-        callback(newTime);
-      });
+    var newIDs;
+    if(IDs!=null){
+      if(IDs[0]!=null){
+        var number=0;
+        for(x in IDs){
+          number++;
+        }
+        IDs=sortBuild(IDs,number);
+        oldTemp=IDs[0].id;
+      }
     }
+    doRepo(time,IDs,function(timeEnd,IDEnd){
+      newTime=timeEnd;
+      if(IDEnd=={}){
+        newIDs=null;
+      }
+      else{
+        newIDs=IDEnd;
+      }
+      callback(newTime,newIDs);
+    });
+  }
 };
-
-function doRepo(time,callback){
-  var timeTemp=time;
+function doRepo(time,IDs,callback){
   travis.repos.builds({
-  owner_name: owner,
-  name: reponame
+    owner_name: owner,
+    name: reponame
   }, function (err, res) {
     if(err==null){
       var BUILD_IDS = res.builds;
       for(i in BUILD_IDS){
-        var finishTime = BUILD_IDS[i].finished_at;
-        if(finishTime > time || (time==null&&finishTime!=null)){
-          if(finishTime>timeTemp||timeTemp==null){
-            timeTemp = finishTime;
-          }
-          doBuild(BUILD_IDS[i].id);
+        if(BUILD_IDS[i].id>oldTemp||oldTemp==null){
+          doBuild(time,BUILD_IDS[i].id,function(newtime,ids){
+            callback(newtime,ids);
+          });
         }
       }
-    callback(timeTemp);
+      if(IDs!=null){
+        for(i in IDs){
+          doBuild(time,IDs[i].id,function(newtime,ids){
+            callback(newtime,ids);
+          });
+        }
+      }
     }
   });
 }
 
-function doBuild(BUILD_ID){
+function doBuild(time,BUILD_ID,callback){
   travis.builds({
     id: BUILD_ID
   }, function(err, res){
     if(err==null){
-      for(var i in res.build.job_ids){
-        var JOB_ID = res.build.job_ids[i];
-        var time = res.build.finished_at.slice(0,10);
-          doJob(JOB_ID,time,BUILD_ID);  
+      var finishTime = res.build.finished_at;
+      if(finishTime > time || (time==null&&finishTime!=null)){
+        if(finishTime>timeTemp||timeTemp==null){
+          timeTemp = finishTime;
+        }
+        for(var i in res.build.job_ids){
+          var JOB_ID = res.build.job_ids[i];
+          doJob(JOB_ID);
+        }
       }
+      else if(finishTime ==null){
+        IDsTemp[count]=res.build;
+        count++;
+      }
+    callback(timeTemp,IDsTemp);
     }
   });
 }
 
-function doJob(JOB_ID,time,build){
+function doJob(JOB_ID){
   travis.jobs({
     id: JOB_ID
   }, function(err, res){
     if(err==null){
       var action = res.job.config.env;
       if(action=="CI_ACTION=marionette_js"){
+        var time = res.job.finished_at.slice(0,10);
+        var build = res.job.build_id;
         doLog(time,build,JOB_ID);
       }
     }
@@ -91,7 +126,6 @@ function doJson(errfile,time,build,job){
       "filePath" : errPath,
       "date" : time
     }
-    console.log(result);
     outJson(result);
   }
 }
@@ -99,4 +133,17 @@ function doJson(errfile,time,build,job){
 //send out the result json to the database
 function outJson(result){
   update.insertData(result);
+}
+
+function sortBuild(ids,number){
+  for(var x=0;x<number;x++){
+    for(var y=0;y<number-1;y++){
+      if(ids[y].id<ids[y+1].id){
+        var temp = ids[y];
+        ids[y] = ids[y+1];
+        ids[y+1] = temp;
+      }
+    }
+  }
+  return ids;
 }

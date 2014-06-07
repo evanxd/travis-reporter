@@ -1,9 +1,11 @@
 var fetch=require('./fetch');
-var buildTime="2014-05-27T22:24:50Z";
-fetch.doThing(buildTime,setTime);
+var buildTime="2014-06-07T14:20:00Z";
+var ids;
+//fetch.doThing(buildTime,ids,setTime);
 exports.inter = setInterval(function(){
-	fetch.doThing(buildTime,setTime);
+	fetch.doThing(buildTime,ids,setInfo);
 },600000);
-function setTime(time){
+function setInfo(time,IDs){
 	buildTime=time;
+	ids=IDs;
 }
