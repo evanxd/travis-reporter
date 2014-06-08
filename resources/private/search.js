@@ -77,11 +77,12 @@ function setDate(json,date)
 		var dayOfMonth = now.getDate();
 		now.setDate(dayOfMonth - date);
 		var range = now.getFullYear() + "-" +(now.getMonth()<10 ? '0' : '')+(now.getMonth()+1)+ "-" +(now.getDate()<10 ? '0' : '')+ now.getDate();
+		console.log(range);
 		var result=[];
 		for(x in json)
 		{
 			var temp=json[x];
-			if(temp.date>=range)
+			if(temp.date>range)
 			{
 			result.push(temp);
 			}
