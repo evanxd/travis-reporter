@@ -9,10 +9,10 @@ var owner = 'mozilla-b2g',
   reponame = 'gaia';
 var timeTemp;
 var IDsTemp,count;
-var oldTemp=null;
+var oldTemp;
 module.exports ={
     doThing : function(time,IDs,callback){ 
-    IDsTemp={},count=0;
+    IDsTemp={},count=0,oldTemp=null;
     var newTime=time;
     var newIDs;
     if(IDs!=null){
@@ -68,13 +68,14 @@ function doBuild(time,BUILD_ID,callback){
   }, function(err, res){
     if(err==null){
       var finishTime = res.build.finished_at;
-      if(finishTime > time || (time==null&&finishTime!=null)){
+      if(finishTime!=null&&(finishTime > time || (time==null&&finishTime!=null))){
         if(finishTime>timeTemp||timeTemp==null){
           timeTemp = finishTime;
         }
         for(var i in res.build.job_ids){
           var JOB_ID = res.build.job_ids[i];
-          doJob(JOB_ID);
+          finishTime = finishTime.slice(0,10);
+          doJob(JOB_ID,finishTime);
         }
       }
       else if(finishTime ==null){
@@ -86,14 +87,13 @@ function doBuild(time,BUILD_ID,callback){
   });
 }
 
-function doJob(JOB_ID){
+function doJob(JOB_ID,time){
   travis.jobs({
     id: JOB_ID
   }, function(err, res){
     if(err==null){
       var action = res.job.config.env;
       if(action=="CI_ACTION=marionette_js"){
-        var time = res.job.finished_at.slice(0,10);
         var build = res.job.build_id;
         doLog(time,build,JOB_ID);
       }
@@ -126,6 +126,7 @@ function doJson(errfile,time,build,job){
       "filePath" : errPath,
       "date" : time
     }
+    //console.log(result);
     outJson(result);
   }
 }
