@@ -4,7 +4,7 @@
  * such as appending, detaching, sorting test file bars and drawing
  * charts on detail page.
  */
-define(['chartTool', 'dataController'], function (chartTool, DataController) {
+define(['chartTool', 'queryTool', 'dataController'], function (chartTool, queryTool, DataController) {
 	'use strict';
 
 	/**
@@ -20,11 +20,10 @@ define(['chartTool', 'dataController'], function (chartTool, DataController) {
 		this.container = testBarContainer;
 		this.tab = inputTab;
 		this.testFileName = fileName;
-		this.data = inputData;
 		this.dataController = new DataController(testBarContainer.find("table.tb_header"));
 		this.dataController.setButtonType(this.dataController.linkButton);
 
-		this.dataController.appendData(this.data);
+		this.dataController.appendData(inputData);
 	}
 
 	/**
@@ -36,14 +35,21 @@ define(['chartTool', 'dataController'], function (chartTool, DataController) {
 		 * chart is about the history of test file this detail page handles. 
 		 */
 		drawChart: function () {
-			var tempDates = [],
+			var data = null,
+				tempDates = [],
 				tempErrorCounts = [],
 				i,
-				max = this.data.length;
+				max;
 
-			for (i = 0; i < max; i += 1) {
-				tempDates.push(this.data[i].date);
-				tempErrorCounts.push(this.data[i].error);
+			queryTool.resetOptions();
+			queryTool.setOptions("name");
+
+			data = queryTool.query();
+			max = data.length;
+
+			for (i = max - 1; i >= 0; i -= 1) {
+				tempDates.push(data[i].date);
+				tempErrorCounts.push(data[i].error);
 			}
 
 			chartTool.drawChart($(this.container).find("canvas.chart_table"), {
