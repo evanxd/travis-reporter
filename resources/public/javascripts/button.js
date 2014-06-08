@@ -287,6 +287,9 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 					targetController.clear();
 					targetController.appendData(queryTool.query());
 					instance.addButtonFeedbackAction($("button.bt_detail"));
+					$('button.bt_detail').click(function () {
+						instance.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
+					});
 				}
 			},
 
