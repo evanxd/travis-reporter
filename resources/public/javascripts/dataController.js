@@ -44,7 +44,6 @@ define(["dataBar"], function (DataBar) {
 		 * The button type of each data bar, null for no button.
 		 */
 		this.buttonType = null;
-
 		this.detailButton = true;
 		this.linkButton = false;
 	}

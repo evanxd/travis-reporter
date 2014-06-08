@@ -44,10 +44,4 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 			button.homePageButtonAction(dataController);
 		}
 	});
-
-	/* Binding detail action to detail button to generate new tabs and
-	information areas. */
-	$('button.bt_detail').click(function() {
-		button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
-	});
 }));

@@ -4,10 +4,11 @@
  * This class provides APIs to perform actions which is corresponding to
  * one specific button or HTML element clicked.
  */
-define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
+define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 	'use strict';
 
-	var detailPageHandlers = [],
+	var queryTool = new QueryTool(),
+		detailPageHandlers = [],
 		Button = null;
 
 	/**
@@ -154,13 +155,13 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 		 * @class Button
 		 * @constructor
 		 */
-		Button = function Button() {
+		Button = function () {
 			if(instance) {
 				return instance;
 			}
 
 			instance = this;	
-		}
+		};
 
 		Button.prototype = {
 			/**
@@ -298,19 +299,23 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 			 * This function will generate a new tab with the title which is the same as the
 			 * test file clicked, also generate a new div place to show the detail information
 			 * of the clicked test file.
-			 * @param {String} fileName The file name of clicked test file.
+			 * @param {String} filePath The file path of clicked test file.
 			 * @param {DOM} tabBar The DOM element which is used to store tabs.
 			 * @param {DOM} informationArea The DOM element which is used to display test file
 			 * or detail charts and history.
 			 */
-			detailButtonAction: function (fileName, tabBar, informationArea) {
+			detailButtonAction: function (filePath, tabBar, informationArea) {
 				var $tab = $('<span>'),
 					$content = $('<p>'),
+					fileName = null,
 					count = tabBar.children().last().children().attr('id');
 				
 				// Retrieve the number of the id of ckicked tab.
 				// Example: tab1 -> 1.
 				count = Number(count.substr(count.length - 1)) + 1;
+
+				fileName = filePath.split('/');
+				fileName = fileName[fileName.length - 1];
 
 				$content.attr('id', 'tab' + count);
 				$content.attr('class', 'tab');
@@ -347,12 +352,8 @@ define(['queryTool', 'detail'], function (queryTool, DetailPageHandler) {
 					$(informationArea).children('div.display').hide();
 					$(informationArea).append($detail);
 
-					// Query all data which detail page needs.
-					queryTool.resetOptions();
-					queryTool.setOptions("name", fileName);
-
 					// Generate new detail page handler.
-					detailPageHandlers.push(new DetailPageHandler($detail, $tab, fileName, queryTool.queryDetail()));
+					detailPageHandlers.push(new DetailPageHandler($detail, $tab, filePath));
 					
 					// Binding feedback actions.
 					instance.addButtonFeedbackAction($('div#display' + count).find('button, th.tb_header'));

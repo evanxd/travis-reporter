@@ -4,8 +4,10 @@
  * such as appending, detaching, sorting test file bars and drawing
  * charts on detail page.
  */
-define(['chartTool', 'queryTool', 'dataController'], function (chartTool, queryTool, DataController) {
+define(['chartTool', 'queryTool', 'dataController'], function (chartTool, QueryTool, DataController) {
 	'use strict';
+
+	var queryTool = new QueryTool();
 
 	/**
 	 * @class DetailPageHandler
@@ -13,17 +15,19 @@ define(['chartTool', 'queryTool', 'dataController'], function (chartTool, queryT
 	 * @param {DOM} testBarContainer The DOM element which conatains test bars.
 	 * @param {DOM} inputTab The DOM element as a tab which is associated with
 	 * this detail page.
-	 * @param {String} fileName The name of clicked test file.
-	 * @param {Array} inputData All data this detail page handles.
+	 * @param {String} filePath The filePath of clicked data bar.
 	 */
-	function DetailPageHandler(testBarContainer, inputTab, fileName, inputData) {
+	function DetailPageHandler(testBarContainer, inputTab, filePath) {
 		this.container = testBarContainer;
 		this.tab = inputTab;
-		this.testFileName = fileName;
+		this.filePath = filePath;
 		this.dataController = new DataController(testBarContainer.find("table.tb_header"));
 		this.dataController.setButtonType(this.dataController.linkButton);
 
-		this.dataController.appendData(inputData);
+		testBarContainer.find(".title").append(filePath);
+		queryTool.resetOptions();
+		queryTool.setOptions("name", filePath);
+		this.dataController.appendData(queryTool.queryDetail());
 	}
 
 	/**
@@ -42,7 +46,7 @@ define(['chartTool', 'queryTool', 'dataController'], function (chartTool, queryT
 				max;
 
 			queryTool.resetOptions();
-			queryTool.setOptions("name");
+			queryTool.setOptions("name", this.filePath);
 
 			data = queryTool.query();
 			max = data.length;
