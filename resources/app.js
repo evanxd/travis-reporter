@@ -11,7 +11,6 @@ var interval = require('./private/runTimer');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var searchs = require('./routes/search.js');
 var app = express();
 
 // view engine setup
@@ -26,10 +25,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/detail', routes);
 app.use('/selfDefine', routes);
 app.use('/users', users);
-app.use('/data', searchs);
 
 // catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
