@@ -1,29 +1,22 @@
+/**
+ * This Javascript file returns a QueryTool class providing APIs
+ * to send request to restfulAPI to query and get data from it.
+ */
 define(function () {
-	'use strict';
-
-	/**
-	 * @private Private variables.
-	 */
-
-	/**
-	 * @private
-	 * The querying options.
-	 */
-	var options = {},
-
+	'use strict';	
 	/**
 	 * @private
 	 * A JSON object to match options between this tool and back-end tool.
 	 */
-		optionMatcher = {
-			"id": "_id",
-			"name": "filePath",
-			"date": "date",
-			"error": "errCount",
-			"count": "count",
-			"build": "buildID",
-			"job": "jobID"
-		};
+	var	optionMatcher = {
+		"id": "_id",
+		"name": "filePath",
+		"date": "date",
+		"error": "errCount",
+		"count": "count",
+		"build": "buildID",
+		"job": "jobID"
+	};
 
 	/**
 	 * @private
@@ -31,7 +24,7 @@ define(function () {
 	 * @param {String} reqUrl The target URL pointing to appropriate restfulAPI.
 	 * @returns {JSON} The response from restfulAPI.
 	 */
-	function request(reqUrl) {
+	function request(reqUrl, options) {
 		var response = null;
 
 		$.ajax({
@@ -47,22 +40,26 @@ define(function () {
 	}
 
 	/**
-	 * @public The following functions and variables are public.
+	 * @public
+	 * @constructor
 	 */
-	return {
+	function QueryTool() {
+		this.options = {};
+	}
+
+	QueryTool.prototype = {
 		/**
-		 * Set the options for data querying.
-		 *
+		 * Set the options for data querying.\
 		 * @param {String} name The name (key) of the restriction to be set.
 		 * @param {String or Integer} value The content of certain restriction.
 		 */
 		setOptions: function(name, value) {
 			if(name !== undefined) {
 				if(value !== "null") {
-					options[optionMatcher[name]] = value;
+					this.options[optionMatcher[name]] = value;
 				}
 				else {
-					delete options[optionMatcher[name]];
+					delete this.options[optionMatcher[name]];
 				}
 			}
 			else {
@@ -74,13 +71,12 @@ define(function () {
 		 * Reset the options for data querying.
 		 */
 		resetOptions: function() {
-			options = {};
+			this.options = {};
 		},
 
 		/**
 		 * Querying data through restful API from back-end server with some options.
 		 * This fucntion is used for home page purpose.
-		 *
 		 * @returns {JSON} A JSON contains the result from restful API.
 		 */
 		query: function () {
@@ -89,11 +85,11 @@ define(function () {
 				length = 0,
 				i;
 
-			if(options.length === 0) {
-				options = {};
+			if(this.options.length === 0) {
+				this.options = {};
 			}
 
-			data = request("/data");
+			data = request("/data", this.options);
 
 			length = data.length;
 
@@ -110,7 +106,6 @@ define(function () {
 		/**
 		 * Querying data through restful API from back-end server with some options.
 		 * This fucntion is used for detail page purpose.
-		 *
 		 * @returns {JSON} A JSON contains the result from restful API.
 		 */
 		queryDetail: function () {
@@ -119,11 +114,11 @@ define(function () {
 				length = 0,
 				i;
 
-			if(options.length === 0) {
-				options = {};
+			if(this.options.length === 0) {
+				this.options = {};
 			}
 
-			data = request("/data/detail");
+			data = request("/data/detail", this.options);
 
 			length = data.length;
 
@@ -136,4 +131,6 @@ define(function () {
 			return result;
 		}
 	};
+
+	return QueryTool;
 });
