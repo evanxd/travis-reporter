@@ -20,17 +20,11 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 	// Binding searching action to search tools (pull-down menus).
 	$('select').change(function () {
 		button.searchToolButtonAction($(this).attr('name'), $(this).val(), dataController);
-		$('button.bt_detail').click(function () {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
-		});
 	});
 	
 	// Binding searching action to search button.
 	$('button#bt_search').click(function () {
 		button.searchToolButtonAction("name", $("input#search").attr("value"), dataController);
-		$('button.bt_detail').click(function () {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
-		});
 	});
 
 	// Binding sorting action to the headers of data bars.
@@ -41,10 +35,6 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 	// Binding home page action to home page button.
 	$('#title').click(function () {
 		button.homePageButtonAction(dataController);
-		button.addButtonFeedbackAction($("button.bt_detail"));
-		$('button.bt_detail').click(function () {
-			button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
-		});
 	});
 
 	// Binding tab action to tabs to switch between information pages.
@@ -52,10 +42,6 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 		button.tabButtonAction($(this), dataController);
 		if($(this).attr('id') === 'display0') {
 			button.homePageButtonAction(dataController);
-			button.addButtonFeedbackAction($("button.bt_detail"));
-			$('button.bt_detail').click(function () {
-				button.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
-			});
 		}
 	});
 
