@@ -10,6 +10,35 @@ define(['chartTool', 'queryTool', 'dataController'], function (chartTool, QueryT
 	var queryTool = new QueryTool();
 
 	/**
+	 * Sort data by date from small to large.
+	 */
+	function sortChartData(data) {
+		var hasChange = true,
+			value01,
+			value02,
+			temp,
+			i = 0,
+			max = data.length - 1;
+
+		while (hasChange) {
+			hasChange = false;
+			for (i = 0; i < max; i += 1) {
+				value01 = data[i].date;
+				value02 = data[i + 1].date;
+
+				if(value01 < value02) {
+					temp = data[i];
+					data[i] = data[i + 1];
+					data[i + 1] = temp;
+					hasChange = true;
+				}
+			}
+		}
+
+		return data;
+	}
+
+	/**
 	 * @class DetailPageHandler
 	 * @constructor
 	 * @param {DOM} testBarContainer The DOM element which conatains test bars.
@@ -48,7 +77,7 @@ define(['chartTool', 'queryTool', 'dataController'], function (chartTool, QueryT
 			queryTool.resetOptions();
 			queryTool.setOptions("name", this.filePath);
 
-			data = queryTool.query();
+			data = sortChartData(queryTool.query());
 			max = data.length;
 
 			for (i = max - 1; i >= 0; i -= 1) {
