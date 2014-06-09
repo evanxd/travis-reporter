@@ -93,7 +93,7 @@ function doJob(JOB_ID,time){
   }, function(err, res){
     if(err==null){
       var action = res.job.config.env;
-      if(action=="CI_ACTION=marionette_js"){
+      if(action.match(/CI_ACTION=marionette_js/g)){
         var build = res.job.build_id;
         doLog(time,build,JOB_ID);
       }
