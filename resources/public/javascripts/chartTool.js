@@ -16,15 +16,15 @@ define(["chart"], function (chart) {
 			scaleOverlay : false,
 	
 			//Boolean - If we want to override with a hard coded scale
-			scaleOverride : false,
+			scaleOverride : true,
 	
 			//** Required if scaleOverride is true **
 			//Number - The number of steps in a hard coded scale
-			scaleSteps : null,
+			scaleSteps : 30,
 			//Number - The value jump in the hard coded scale
-			scaleStepWidth : null,
+			scaleStepWidth : 1,
 			//Number - The scale starting value
-			scaleStartValue : null,
+			scaleStartValue : 0,
 
 			//String - Colour of the scale line	
 			scaleLineColor : "rgba(0,0,0,.1)",
