@@ -5,10 +5,12 @@ module.exports={
 	getData:function(req,res)
 	{
 		var result = repoter.find({});
+		var reg= new RegExp(req.query.filePath,'i');
+		result.where('filePath').regex(reg);
 		var data=[];
 		result.exec(function(err,result){	
 			data=find(result);
-			data=setFilePath(data,req.query.filePath);
+			//data=setFilePath(data,req.query.filePath);
 			data=setDate(data,req.query.date);
 			data=setCount(data,req.query.count);
 			data=setErrCount(data,req.query.errCount);
@@ -18,12 +20,21 @@ module.exports={
 	getDetail:function(req,res)
 	{
 		var result = repoter.find({filePath:req.query.filePath});
-			result.sort('-date');
+			result.sort('date');
 			result.exec(function(err,result){	
 			res.send(result);
 		});
+	},
+	getSearch:function(req,res)
+	{
+		var result = repoter.find({});
+		
+
+		result.exec(function(err,result){	
+			res.send(find(result));
+		});
 	}
-}
+}		
 
 function find(result)
 	{
