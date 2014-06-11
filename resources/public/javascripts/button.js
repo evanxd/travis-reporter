@@ -132,8 +132,9 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 		}).done(function (data) {
 			selfDefinePage = $(data);
 		});
-
-		selfDefinePage.find(".header").append(name + " defining");
+		
+		name = name.replace(name.charAt(0), name.charAt(0).toUpperCase());
+		selfDefinePage.find(".header").append(name + " self defining");
 
 		bodyTag.append(selfDefinePage);
 
@@ -261,43 +262,11 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 			 */
 			searchToolButtonAction: function (targetController) {
 				var options = $(".search").not("[value='']");
-				/*var selfDefinePage = null;
-				if(value === "selfDefine") {
-					// Enter self defining option mode.
-					lockScreen();
-					selfDefinePage = produceSelfDefinePage(name);
-					instance.addButtonFeedbackAction(selfDefinePage.find("button"));
 
-					// Pop out the self defining page.
-					selfDefinePage.slideDown();
-
-					// Add action to button on self defining page.
-					selfDefinePage.find("button").click(function () {
-						var inputValue = selfDefinePage.find("input").attr("value");
-						
-						if(inputValue !== "") {
-							// Call myself (search the data).
-							instance.searchToolButtonAction(name, inputValue, targetController);
-						}
-						
-						// Hide self defining page and delete it.
-						selfDefinePage.slideUp(deleteSelfDefinePage);
-
-						unlockScreen();
-					});
-				}
-				else {
-					queryTool.setOptions(name, value);
-					targetController.clear();
-					targetController.appendData(queryTool.query());
-					instance.addButtonFeedbackAction($("button.bt_detail"));
-					$('button.bt_detail').click(function () {
-						instance.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
-					});
-				}*/
 				queryTool.resetOptions();
 				$.each(options, function (index, value) {
 					queryTool.setOptions($(value).attr("name"), $(value).attr("value"));
+					console.log($(value).attr("value"));
 				});
 
 				targetController.clear();
@@ -305,6 +274,37 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 				instance.addButtonFeedbackAction($("button.bt_detail"));
 				$('button.bt_detail').click(function () {
 					instance.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
+				});
+			},
+
+			/**
+			 * Define the query option manually by user.
+			 * @param {DOM} targetDOM The clicked DOM (a option tag).
+			 */
+			selfDefineAction: function (targetDOM) {
+				var selfDefinePage = null,
+					pullDownMenu = $(targetDOM).parent();
+
+				lockScreen();
+				selfDefinePage = produceSelfDefinePage(pullDownMenu.attr("name"));
+				instance.addButtonFeedbackAction(selfDefinePage.find("button"));
+
+				// Pop out the self defining page.
+				selfDefinePage.slideDown();
+
+				// Add action to button on self defining page.
+				selfDefinePage.find("button").click(function () {
+					var inputValue = selfDefinePage.find("input").attr("value");
+						
+					if(inputValue !== "") {
+						targetDOM.attr("value", inputValue);
+					}
+					pullDownMenu.val(inputValue);
+						
+					// Hide self defining page and delete it.
+					selfDefinePage.slideUp(deleteSelfDefinePage);
+
+					unlockScreen();
 				});
 			},
 
