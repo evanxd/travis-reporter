@@ -133,6 +133,17 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 			selfDefinePage = $(data);
 		});
 		
+		switch(name) {
+		case "error":
+			selfDefinePage.find(".description").append(" <=");
+			break;
+		case "date":
+			selfDefinePage.find(".description").append(" (within)");
+			break;
+		default:
+			break;
+		}
+
 		name = name.replace(name.charAt(0), name.charAt(0).toUpperCase());
 		selfDefinePage.find(".header").append(name + " self defining");
 
@@ -300,6 +311,15 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 						targetDOM.attr("value", inputValue);
 					}
 					pullDownMenu.val(inputValue);
+						
+					// Hide self defining page and delete it.
+					selfDefinePage.slideUp(deleteSelfDefinePage);
+
+					unlockScreen();
+				});
+
+				$("#lockScreen").click(function () {
+					pullDownMenu.val("");
 						
 					// Hide self defining page and delete it.
 					selfDefinePage.slideUp(deleteSelfDefinePage);
