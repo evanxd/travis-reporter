@@ -201,27 +201,27 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 			 * @param {Object} targetController The object handling the data to be shown.
 			 */
 			homePageButtonAction: function (targetController) {
+				// Update the test file container and show data to user.
 				queryTool.resetOptions();
+				instance.searchToolButtonAction("count", 10, targetController);
+				
+				// Switch to home page.
+				$('div.display').hide();
+				$('div#display0').show();
+				$("#tab0").addClass('bt_pressed');
 
 				// Reset all pull-down menu to "none".
 				$("select").val("null");
 
 				// Initializes the "count" pull-down menu to "10".
 				$("select[name='count']").val(10);
-				
-				// Update the test file container and show data to user.
-				instance.searchToolButtonAction("count", 10, targetController);
 
 				// Reset arrows on headers.
 				$('.img_sort').hide();
 
-				// Reset to home page.
-				$('div.display').hide();
-				$('div#display0').show();
-
-				// Reset all tabs and let home page tab be pressed.
-				$("p.bt_pressed").removeClass('bt_pressed');
-				$("#tab0").addClass('bt_pressed');
+				// Delete all unnecessary elements.
+				$('div.display').not("#display0").detach();
+				$(".tab").not("#tab0").parent().detach();
 			},
 
 			/**
@@ -319,7 +319,7 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 
 				$content.attr('id', 'tab' + count);
 				$content.attr('class', 'tab');
-				$content.attr('class', 'bt_pressed');
+				$content.addClass('bt_pressed');
 				$content.append(fileName);
 
 				// Reset all tabs to unclicked.

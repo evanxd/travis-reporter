@@ -6,7 +6,15 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 		button = new Button();
 
 	dataController.setButtonType(dataController.detailButton);
-	button.homePageButtonAction(dataController);
+
+	// Initializes the "count" pull-down menu to "10".
+	$("select[name='count']").val(10);
+				
+	// Update the test file container and show data to user.
+	button.searchToolButtonAction("count", 10, dataController);
+
+	$("#tab0").addClass('bt_pressed');
+	
 	dataController.sort('error');
 
 	// Button action binding.
@@ -40,8 +48,5 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 	// Binding tab action to tabs to switch between information pages.
 	$('p.tab').click(function () {
 		button.tabButtonAction($(this), dataController);
-		if($(this).attr('id') === 'display0') {
-			button.homePageButtonAction(dataController);
-		}
 	});
 }));
