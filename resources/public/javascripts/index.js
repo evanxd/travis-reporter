@@ -8,10 +8,12 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 	dataController.setButtonType(dataController.detailButton);
 
 	// Initializes the "count" pull-down menu to "10".
+	/*
 	$("select[name='count']").val(10);
+	*/
 				
 	// Update the test file container and show data to user.
-	button.searchToolButtonAction("count", 10, dataController);
+	button.searchToolButtonAction(dataController);
 
 	$("#tab0").addClass('bt_pressed');
 	
@@ -26,13 +28,15 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 	$("#tab0").addClass('bt_pressed');
 
 	// Binding searching action to search tools (pull-down menus).
+	/*
 	$('select').change(function () {
 		button.searchToolButtonAction($(this).attr('name'), $(this).val(), dataController);
 	});
+	*/
 	
 	// Binding searching action to search button.
 	$('button#bt_search').click(function () {
-		button.searchToolButtonAction("name", $("input#search").attr("value"), dataController);
+		button.searchToolButtonAction(dataController);
 	});
 
 	// Binding sorting action to the headers of data bars.

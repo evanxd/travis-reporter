@@ -13,59 +13,25 @@ html
     div(id="container", class="container")
       div(id="title", class="panel")
         p Travis Reporter
-      div(id="search_bar", class="panel")
-        table
-          tr
-            td
-              img(id="img_magnifier", src="images/magnifier.png", alt="magnifier image")
-            td(id="td_search")
-               input(id="search", type="text", name="search" value="")
-            td
-              button(id="bt_search", class="bt") Search
-      hr
       div(id="search_tool_bar", class="panel")
         table
           tr
             td
-              p Search tool
+              img(id="img_magnifier", src="images/magnifier.png", alt="magnifier image")
+            td(id="key_word" class="tb_last")
+              p Key words
+              input(class="search" type="text", name="name" value="")
             td
-              table
-                tr
-                  td
-                    p Error count
-                    select(name="error")
-                      option(value="null") None
-                      option(value="3") &gt;= 3 times
-                      option(value="5") &gt;= 5 times
-                      option(value="10") &gt;= 10 times
-                      option(value="20") &gt;= 20 times
-                      option(value="selfDefine") Self define...
+              p Error count
+              input(class="search", type="text", name="error" value="")
             td
-              table
-                tr
-                  td
-                    p Date range
-                    select(name="date")
-                      option(value="null") None
-                      option(value="1") Today
-                      option(value="3") &lt;= 3 days
-                      option(value="7") &lt;= 1 week
-                      option(value="21") &lt;= 3 weeks
-                      option(value="30") &lt;= 1 month
-                      option(value="selfDefine") Self define...
+              p Date range
+              input(class="search", type="text", name="date" value="")
             td
-              table
-                tr
-                  td
-                    p Display count
-                    select(name="count")
-                      option(value="null") None
-                      option(value="5") &lt;= 5
-                      option(value="10") &lt;= 10
-                      option(value="20") &lt;= 20
-                      option(value="50") &lt;= 50
-                      option(value="selfDefine") Self define...
-            td(class="tb_last")
+              p Display count
+              input(class="search", type="text", name="count" value="")
+            td
+              button(id="bt_search", class="bt") Search
       hr
       div(id="info_box", class="panel")
         div(id="info_box_tab")

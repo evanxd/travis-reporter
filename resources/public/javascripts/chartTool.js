@@ -106,8 +106,8 @@ define(["chart"], function (chart) {
 				ctx = $(target)[0].getContext("2d");
 
 			if(inputData.dates.length === 1) {
-				inputData.dates.push("Now");
-				inputData.errorCounts.push(inputData.errorCounts[0]);
+				inputData.dates.unshift("Previous");
+				inputData.errorCounts.unshift(0);
 			}
 
 			data.labels = inputData.dates;

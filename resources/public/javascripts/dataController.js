@@ -62,7 +62,8 @@ define(["dataBar"], function (DataBar) {
 				$bar = null,
 				$column = null,
 				$btDetail = null,
-				key = null;
+				key = null,
+				firstIndex = true;
 
 			for (i = 0; i < max; i += 1) {
 				$bar = $("<tr>");
@@ -83,16 +84,19 @@ define(["dataBar"], function (DataBar) {
 				
 
 				for (key in data[i]) {
-					if(key !== 'id') {
-						$column = $("<td>");
-						$column.attr("class", key);
-						$column.append(data[i][key]);
-						$bar.append($column);
+					$column = $("<td>");
+					if(firstIndex) {
+						$column.css("width", "100%");
+						$column.css("text-align", "left");
+						firstIndex = false;
 					}
+					$column.addClass(key);
+					$column.append(data[i][key]);
+					$bar.append($column);
 				}
 			
 				$column = $("<td>");
-				$column.attr("class", "tb_last");
+				//$column.attr("class", "tb_last");
 				$column.append($btDetail);
 			
 				$bar.append($column);
@@ -102,6 +106,7 @@ define(["dataBar"], function (DataBar) {
 				this.dataBars.push(new DataBar($bar));
 
 				this.dataCounter += 1;
+				firstIndex = true;
 			}
 		},
 
