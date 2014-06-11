@@ -23,13 +23,31 @@ html
               input(class="search" type="text", name="name" value="")
             td
               p Error count
-              input(class="search", type="text", name="error" value="")
+              select(class="search" name="error")
+                option(value="") None
+                option(value="5") &gt;= 5 times
+                option(value="10") &gt;= 10 times
+                option(value="15") &gt;= 15 times
+                option(value="20") &gt;= 20 times
+                option(class="selfDefine" value="selfDefine") Self define...
             td
               p Date range
-              input(class="search", type="text", name="date" value="")
+              select(class="search" name="date")
+                option(value="") None
+                option(value="1") Today
+                option(value="3") Within 3 days
+                option(value="5") Within 5 days
+                option(value="7") Within 1 week
+                option(class="selfDefine" value="selfDefine") Self define...
             td
               p Display count
-              input(class="search", type="text", name="count" value="")
+              select(class="search" name="count")
+                option(value="") None
+                option(value="5") &lt;= 5
+                option(value="5") &lt;= 10
+                option(value="7") &lt;= 20
+                option(value="14") &lt;= 50
+                option(class="selfDefine" value="selfDefine") Self define...
             td
               button(id="bt_search", class="bt") Search
       hr

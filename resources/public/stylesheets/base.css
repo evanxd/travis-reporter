@@ -25,7 +25,6 @@ table {
 	overflow: scroll;
 	word-break: break-all;
 	white-space: nowrap;
-
 }
 
 td {
@@ -57,7 +56,7 @@ button {
 }
 
 td[class="error"] {
-    text-align: right;
+    text-align: center;
 }
 
 .bt {

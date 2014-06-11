@@ -53,4 +53,8 @@ $(document).ready(require(['button', 'dataController'], function (Button, DataCo
 	$('p.tab').click(function () {
 		button.tabButtonAction($(this), dataController);
 	});
+
+	$("option.selfDefine").click(function () {
+		button.selfDefineAction($(this));
+	});
 }));
