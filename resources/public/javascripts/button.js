@@ -108,7 +108,7 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 	 */
 	function unlockScreen() {
 		var del = function () {
-			$("#lockScreen").detach();
+			$("#lockScreen").remove();
 		};
 
 		$("#lockScreen").fadeOut(del);
@@ -144,7 +144,7 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 	 * Delete the self defining page on the top.
 	 */
 	function deleteSelfDefinePage() {
-		$("#selfDefine").detach();
+		$("#selfDefine").remove();
 	}
 
 	// Here starts definding the singleton object.
@@ -220,8 +220,10 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 				$('.img_sort').hide();
 
 				// Delete all unnecessary elements.
-				$('div.display').not("#display0").detach();
-				$(".tab").not("#tab0").parent().detach();
+				$('div.display').not("#display0").remove();
+				$(".tab").not("#tab0").parent().remove();
+
+				detailPageHandlers = [];
 			},
 
 			/**

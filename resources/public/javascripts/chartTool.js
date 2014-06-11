@@ -104,7 +104,12 @@ define(["chart"], function (chart) {
 		drawChart: function (target, inputData) {
 			var chart = null,
 				ctx = $(target)[0].getContext("2d");
-			
+
+			if(inputData.dates.length === 1) {
+				inputData.dates.push("Now");
+				inputData.errorCounts.push(inputData.errorCounts[0]);
+			}
+
 			data.labels = inputData.dates;
 			lineChartOptions.data = inputData.errorCounts;
 			data.datasets = [lineChartOptions];

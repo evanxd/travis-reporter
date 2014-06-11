@@ -250,7 +250,7 @@ define(["dataBar"], function (DataBar) {
 		 * Clear all data appended to target.
 		 */
 		clear: function () {
-			$('.tb_info_bar').detach();
+			$('.tb_info_bar').remove();
 			this.dataBars = [];
 			this.dataCounter = 0;
 		},
