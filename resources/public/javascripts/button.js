@@ -202,8 +202,9 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 			 */
 			homePageButtonAction: function (targetController) {
 				// Update the test file container and show data to user.
+				$("input").attr("value", "");
 				queryTool.resetOptions();
-				instance.searchToolButtonAction("count", 10, targetController);
+				instance.searchToolButtonAction(targetController);
 				
 				// Switch to home page.
 				$('div.display').hide();
@@ -211,14 +212,13 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 				$("#tab0").addClass('bt_pressed');
 
 				// Reset all pull-down menu to "none".
-				$("select").val("null");
+				//$("select").val("null");
 
 				// Initializes the "count" pull-down menu to "10".
-				$("select[name='count']").val(10);
+				//$("select[name='count']").val(10);
 
 				// Reset arrows on headers.
 				$('.img_sort').hide();
-
 				// Delete all unnecessary elements.
 				$('div.display').not("#display0").remove();
 				$(".tab").not("#tab0").parent().remove();
@@ -259,8 +259,9 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 			 * @param {DOM} clickedDOM The clicked pull-down menu element.
 			 * @param {Object} targetController The object handling the data to be shown.
 			 */
-			searchToolButtonAction: function (name, value, targetController) {
-				var selfDefinePage = null;
+			searchToolButtonAction: function (targetController) {
+				var options = $(".search").not("[value='']");
+				/*var selfDefinePage = null;
 				if(value === "selfDefine") {
 					// Enter self defining option mode.
 					lockScreen();
@@ -293,7 +294,18 @@ define(['queryTool', 'detail'], function (QueryTool, DetailPageHandler) {
 					$('button.bt_detail').click(function () {
 						instance.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
 					});
-				}
+				}*/
+				queryTool.resetOptions();
+				$.each(options, function (index, value) {
+					queryTool.setOptions($(value).attr("name"), $(value).attr("value"));
+				});
+
+				targetController.clear();
+				targetController.appendData(queryTool.query());
+				instance.addButtonFeedbackAction($("button.bt_detail"));
+				$('button.bt_detail').click(function () {
+					instance.detailButtonAction($(this).parent().parent().children('.name').text(), $('div#info_box_tab'), $('div#info_box_in_index'));
+				});
 			},
 
 			/**
